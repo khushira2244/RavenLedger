@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Raw datasets - do not push large data
+data/raw/
+*.zip
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tgz
+*.msi
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
