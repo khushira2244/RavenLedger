@@ -208,9 +208,8 @@ ERP-style payment risk
 
 Architecture image:
 
-```text
-<img width="764" height="383" alt="image" src="https://github.com/user-attachments/assets/3832c9c3-7015-4042-bb88-eda7373dd76b" />
-```
+<img width="856" height="415" alt="image" src="https://github.com/user-attachments/assets/e7bc3976-96f6-44cd-a2e0-4acb53a3b118" />
+
 
 ---
 
