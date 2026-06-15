@@ -1,0 +1,1680 @@
+[
+  {
+    "correlation_case_id": "RL-CORR-0001",
+    "business_case_id": "RL-CASE-0135",
+    "invoice_id": "INV_0249564",
+    "supplier_id": "67443fb8-81bd-45d5-b5a6-571c4fa5c35e",
+    "department_id": "DPT_008",
+    "invoice_amount": 7135.49,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "Supplier is blacklisted",
+      "Split invoice pattern detected",
+      "Late-night invoice submission detected"
+    ],
+    "business_recommended_next_step": "Hold payment and send supplier for manual compliance review.",
+    "insider_case_id": "IR-USER-0001",
+    "insider_user": "DTAA/ABB0272",
+    "insider_risk_score": 80,
+    "insider_severity": "Critical",
+    "insider_signals": [
+      "Very high total user activity",
+      "Very high device connect/disconnect activity",
+      "High HTTP/web activity",
+      "High logon/logoff activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 89,
+    "severity": "Critical",
+    "correlation_summary": "Invoice INV_0249564 has a business risk score of 75 due to Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected. The case is correlated with insider-risk user DTAA/ABB0272 with insider score 80. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 89.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Supplier compliance policy violation: blacklisted supplier involved.",
+      "Procurement policy violation: split invoice pattern suggests threshold bypass risk.",
+      "Operational anomaly: invoice submitted during unusual time window.",
+      "Insider risk policy warning: elevated suspicious user activity."
+    ],
+    "controls_triggered": [
+      "Supplier manual compliance review required.",
+      "Procurement audit review required.",
+      "Require analyst review before release.",
+      "Review user access/session behavior.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Compliance Team",
+      "Procurement Audit",
+      "SOC Analyst",
+      "Security Operations Center"
+    ],
+    "final_recommended_action": "Hold payment immediately, escalate to Finance, SOC, Compliance, and generate audit report.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 1,
+    "ranking_reason": "Ranked #1 because this case combines Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected, insider-risk score 80, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Failed",
+        "reason": "Supplier is blacklisted"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Failed",
+        "reason": "Split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Failed",
+        "reason": "Late-night invoice submission detected"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Failed",
+        "reason": "Insider risk score is 80"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 89"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation."
+  },
+  {
+    "correlation_case_id": "RL-CORR-0002",
+    "business_case_id": "RL-CASE-0203",
+    "invoice_id": "INV_0264348",
+    "supplier_id": "780b3657-117b-455b-b094-4bdb26a524e3",
+    "department_id": "DPT_006",
+    "invoice_amount": 7546.09,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "Supplier is blacklisted",
+      "Late-night invoice submission detected",
+      "Invoice image tamper signal detected"
+    ],
+    "business_recommended_next_step": "Hold payment and send supplier for manual compliance review.",
+    "insider_case_id": "IR-USER-0002",
+    "insider_user": "DTAA/AFH0331",
+    "insider_risk_score": 75,
+    "insider_severity": "High",
+    "insider_signals": [
+      "Very high total user activity",
+      "High device connect/disconnect activity",
+      "Very high HTTP/web activity",
+      "Moderate-high logon/logoff activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 88,
+    "severity": "Critical",
+    "correlation_summary": "Invoice INV_0264348 has a business risk score of 75 due to Fraud label present, Supplier is blacklisted, Late-night invoice submission detected, Invoice image tamper signal detected. The case is correlated with insider-risk user DTAA/AFH0331 with insider score 75. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 88.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Supplier compliance policy violation: blacklisted supplier involved.",
+      "Operational anomaly: invoice submitted during unusual time window.",
+      "Insider risk policy warning: elevated suspicious user activity."
+    ],
+    "controls_triggered": [
+      "Supplier manual compliance review required.",
+      "Require analyst review before release.",
+      "Review user access/session behavior.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Compliance Team",
+      "SOC Analyst",
+      "Security Operations Center"
+    ],
+    "final_recommended_action": "Hold payment immediately, escalate to Finance, SOC, Compliance, and generate audit report.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 2,
+    "ranking_reason": "Ranked #2 because this case combines Fraud label present, Supplier is blacklisted, Late-night invoice submission detected, Invoice image tamper signal detected, insider-risk score 75, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Failed",
+        "reason": "Supplier is blacklisted"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Passed",
+        "reason": "No split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Failed",
+        "reason": "Late-night invoice submission detected"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Failed",
+        "reason": "Insider risk score is 75"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 88"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation."
+  },
+  {
+    "correlation_case_id": "RL-CORR-0003",
+    "business_case_id": "RL-CASE-0218",
+    "invoice_id": "INV_0083884",
+    "supplier_id": "cdda24ba-2d06-48cf-b805-f9076cd66193",
+    "department_id": "DPT_045",
+    "invoice_amount": 1158.95,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "Supplier is blacklisted",
+      "Split invoice pattern detected",
+      "Late-night invoice submission detected"
+    ],
+    "business_recommended_next_step": "Hold payment and send supplier for manual compliance review.",
+    "insider_case_id": "IR-USER-0003",
+    "insider_user": "DTAA/AMA0191",
+    "insider_risk_score": 75,
+    "insider_severity": "High",
+    "insider_signals": [
+      "Very high total user activity",
+      "Very high device connect/disconnect activity",
+      "High HTTP/web activity",
+      "Moderate-high logon/logoff activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 88,
+    "severity": "Critical",
+    "correlation_summary": "Invoice INV_0083884 has a business risk score of 75 due to Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected. The case is correlated with insider-risk user DTAA/AMA0191 with insider score 75. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 88.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Supplier compliance policy violation: blacklisted supplier involved.",
+      "Procurement policy violation: split invoice pattern suggests threshold bypass risk.",
+      "Operational anomaly: invoice submitted during unusual time window.",
+      "Insider risk policy warning: elevated suspicious user activity."
+    ],
+    "controls_triggered": [
+      "Supplier manual compliance review required.",
+      "Procurement audit review required.",
+      "Require analyst review before release.",
+      "Review user access/session behavior.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Compliance Team",
+      "Procurement Audit",
+      "SOC Analyst",
+      "Security Operations Center"
+    ],
+    "final_recommended_action": "Hold payment immediately, escalate to Finance, SOC, Compliance, and generate audit report.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 3,
+    "ranking_reason": "Ranked #3 because this case combines Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected, insider-risk score 75, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Failed",
+        "reason": "Supplier is blacklisted"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Failed",
+        "reason": "Split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Failed",
+        "reason": "Late-night invoice submission detected"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Failed",
+        "reason": "Insider risk score is 75"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 88"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation."
+  },
+  {
+    "correlation_case_id": "RL-CORR-0004",
+    "business_case_id": "RL-CASE-0512",
+    "invoice_id": "INV_0111161",
+    "supplier_id": "70fd6672-b80f-46c5-828f-a16b0aa6fcb9",
+    "department_id": "DPT_048",
+    "invoice_amount": 5712.37,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "Supplier is blacklisted",
+      "Split invoice pattern detected",
+      "Late-night invoice submission detected"
+    ],
+    "business_recommended_next_step": "Hold payment and send supplier for manual compliance review.",
+    "insider_case_id": "IR-USER-0004",
+    "insider_user": "DTAA/AJB0016",
+    "insider_risk_score": 60,
+    "insider_severity": "High",
+    "insider_signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "High HTTP/web activity",
+      "High logon/logoff activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 84,
+    "severity": "High",
+    "correlation_summary": "Invoice INV_0111161 has a business risk score of 75 due to Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected. The case is correlated with insider-risk user DTAA/AJB0016 with insider score 60. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 84.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Supplier compliance policy violation: blacklisted supplier involved.",
+      "Procurement policy violation: split invoice pattern suggests threshold bypass risk.",
+      "Operational anomaly: invoice submitted during unusual time window.",
+      "Insider risk policy warning: elevated suspicious user activity."
+    ],
+    "controls_triggered": [
+      "Supplier manual compliance review required.",
+      "Procurement audit review required.",
+      "Require analyst review before release.",
+      "Review user access/session behavior.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Compliance Team",
+      "Procurement Audit",
+      "SOC Analyst",
+      "Security Operations Center"
+    ],
+    "final_recommended_action": "Hold payment for manual review and escalate to Finance + relevant risk owners.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 4,
+    "ranking_reason": "Ranked #4 because this case combines Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected, insider-risk score 60, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Failed",
+        "reason": "Supplier is blacklisted"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Failed",
+        "reason": "Split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Failed",
+        "reason": "Late-night invoice submission detected"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Failed",
+        "reason": "Insider risk score is 60"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 84"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation."
+  },
+  {
+    "correlation_case_id": "RL-CORR-0005",
+    "business_case_id": "RL-CASE-0535",
+    "invoice_id": "INV_0261104",
+    "supplier_id": "af527666-b239-49f4-9bb5-46457ddac1b6",
+    "department_id": "DPT_044",
+    "invoice_amount": 1589.09,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "High supplier risk score: 0.73",
+      "Split invoice pattern detected",
+      "Invoice image tamper signal detected"
+    ],
+    "business_recommended_next_step": "Escalate to procurement audit for possible threshold bypass.",
+    "insider_case_id": "IR-USER-0006",
+    "insider_user": "DTAA/AFR0646",
+    "insider_risk_score": 55,
+    "insider_severity": "Medium",
+    "insider_signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "Very high HTTP/web activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 82,
+    "severity": "High",
+    "correlation_summary": "Invoice INV_0261104 has a business risk score of 75 due to Fraud label present, High supplier risk score: 0.73, Split invoice pattern detected, Invoice image tamper signal detected. The case is correlated with insider-risk user DTAA/AFR0646 with insider score 55. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 82.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Procurement policy violation: split invoice pattern suggests threshold bypass risk.",
+      "Insider risk observation: medium user behavior risk."
+    ],
+    "controls_triggered": [
+      "Procurement audit review required.",
+      "Attach user activity context to investigation.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Procurement Audit",
+      "SOC Analyst"
+    ],
+    "final_recommended_action": "Hold payment for manual review and escalate to Finance + relevant risk owners.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 5,
+    "ranking_reason": "Ranked #5 because this case combines Fraud label present, High supplier risk score: 0.73, Split invoice pattern detected, Invoice image tamper signal detected, insider-risk score 55, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Passed",
+        "reason": "No blacklisted supplier signal found"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Failed",
+        "reason": "Split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Passed",
+        "reason": "No unusual submission time signal found"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Warning",
+        "reason": "Insider risk score is 55"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 82"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation."
+  },
+  {
+    "correlation_case_id": "RL-CORR-0006",
+    "business_case_id": "RL-CASE-1064",
+    "invoice_id": "INV_0182514",
+    "supplier_id": "af8ca888-b1f8-4ad9-b49b-508927335670",
+    "department_id": "DPT_002",
+    "invoice_amount": 1859.45,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "Supplier is blacklisted",
+      "Split invoice pattern detected",
+      "Late-night invoice submission detected"
+    ],
+    "business_recommended_next_step": "Hold payment and send supplier for manual compliance review.",
+    "insider_case_id": "IR-USER-0008",
+    "insider_user": "DTAA/AFN0918",
+    "insider_risk_score": 55,
+    "insider_severity": "Medium",
+    "insider_signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "High HTTP/web activity",
+      "Moderate-high logon/logoff activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 82,
+    "severity": "High",
+    "correlation_summary": "Invoice INV_0182514 has a business risk score of 75 due to Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected. The case is correlated with insider-risk user DTAA/AFN0918 with insider score 55. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 82.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Supplier compliance policy violation: blacklisted supplier involved.",
+      "Procurement policy violation: split invoice pattern suggests threshold bypass risk.",
+      "Operational anomaly: invoice submitted during unusual time window.",
+      "Insider risk observation: medium user behavior risk."
+    ],
+    "controls_triggered": [
+      "Supplier manual compliance review required.",
+      "Procurement audit review required.",
+      "Require analyst review before release.",
+      "Attach user activity context to investigation.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Compliance Team",
+      "Procurement Audit",
+      "SOC Analyst"
+    ],
+    "final_recommended_action": "Hold payment for manual review and escalate to Finance + relevant risk owners.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 6,
+    "ranking_reason": "Ranked #6 because this case combines Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected, insider-risk score 55, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Failed",
+        "reason": "Supplier is blacklisted"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Failed",
+        "reason": "Split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Failed",
+        "reason": "Late-night invoice submission detected"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Warning",
+        "reason": "Insider risk score is 55"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 82"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation."
+  },
+  {
+    "correlation_case_id": "RL-CORR-0007",
+    "business_case_id": "RL-CASE-1181",
+    "invoice_id": "INV_0279576",
+    "supplier_id": "2cf149cb-4f1e-4a37-8ac8-ad937e02921d",
+    "department_id": "DPT_037",
+    "invoice_amount": 332.82,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "Supplier is blacklisted",
+      "Late-night invoice submission detected",
+      "Invoice image tamper signal detected"
+    ],
+    "business_recommended_next_step": "Hold payment and send supplier for manual compliance review.",
+    "insider_case_id": "IR-USER-0007",
+    "insider_user": "DTAA/AJC0266",
+    "insider_risk_score": 50,
+    "insider_severity": "Medium",
+    "insider_signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "High logon/logoff activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 81,
+    "severity": "High",
+    "correlation_summary": "Invoice INV_0279576 has a business risk score of 75 due to Fraud label present, Supplier is blacklisted, Late-night invoice submission detected, Invoice image tamper signal detected. The case is correlated with insider-risk user DTAA/AJC0266 with insider score 50. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 81.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Supplier compliance policy violation: blacklisted supplier involved.",
+      "Operational anomaly: invoice submitted during unusual time window.",
+      "Insider risk observation: medium user behavior risk."
+    ],
+    "controls_triggered": [
+      "Supplier manual compliance review required.",
+      "Require analyst review before release.",
+      "Attach user activity context to investigation.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Compliance Team",
+      "SOC Analyst"
+    ],
+    "final_recommended_action": "Hold payment for manual review and escalate to Finance + relevant risk owners.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 7,
+    "ranking_reason": "Ranked #7 because this case combines Fraud label present, Supplier is blacklisted, Late-night invoice submission detected, Invoice image tamper signal detected, insider-risk score 50, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Failed",
+        "reason": "Supplier is blacklisted"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Passed",
+        "reason": "No split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Failed",
+        "reason": "Late-night invoice submission detected"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Warning",
+        "reason": "Insider risk score is 50"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 81"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation."
+  },
+  {
+    "correlation_case_id": "RL-CORR-0008",
+    "business_case_id": "RL-CASE-1214",
+    "invoice_id": "INV_0168116",
+    "supplier_id": "b27e1442-fd7f-4973-be42-df5b90a3fbbf",
+    "department_id": "DPT_018",
+    "invoice_amount": 2066.26,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "Supplier is blacklisted",
+      "Split invoice pattern detected",
+      "Late-night invoice submission detected"
+    ],
+    "business_recommended_next_step": "Hold payment and send supplier for manual compliance review.",
+    "insider_case_id": "IR-USER-0005",
+    "insider_user": "DTAA/ACH0803",
+    "insider_risk_score": 45,
+    "insider_severity": "Medium",
+    "insider_signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "High HTTP/web activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 80,
+    "severity": "High",
+    "correlation_summary": "Invoice INV_0168116 has a business risk score of 75 due to Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected. The case is correlated with insider-risk user DTAA/ACH0803 with insider score 45. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 80.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Supplier compliance policy violation: blacklisted supplier involved.",
+      "Procurement policy violation: split invoice pattern suggests threshold bypass risk.",
+      "Operational anomaly: invoice submitted during unusual time window.",
+      "Insider risk observation: medium user behavior risk."
+    ],
+    "controls_triggered": [
+      "Supplier manual compliance review required.",
+      "Procurement audit review required.",
+      "Require analyst review before release.",
+      "Attach user activity context to investigation.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Compliance Team",
+      "Procurement Audit",
+      "SOC Analyst"
+    ],
+    "final_recommended_action": "Hold payment for manual review and escalate to Finance + relevant risk owners.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 8,
+    "ranking_reason": "Ranked #8 because this case combines Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected, insider-risk score 45, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Failed",
+        "reason": "Supplier is blacklisted"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Failed",
+        "reason": "Split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Failed",
+        "reason": "Late-night invoice submission detected"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Warning",
+        "reason": "Insider risk score is 45"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 80"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation."
+  },
+  {
+    "correlation_case_id": "RL-CORR-0009",
+    "business_case_id": "RL-CASE-1406",
+    "invoice_id": "INV_0285485",
+    "supplier_id": "bdd151b0-f64a-46ec-b0a5-648eefe9b3d0",
+    "department_id": "DPT_043",
+    "invoice_amount": 2735.72,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "Supplier is blacklisted",
+      "Split invoice pattern detected",
+      "Late-night invoice submission detected"
+    ],
+    "business_recommended_next_step": "Hold payment and send supplier for manual compliance review.",
+    "insider_case_id": "IR-USER-0009",
+    "insider_user": "DTAA/BGF0236",
+    "insider_risk_score": 45,
+    "insider_severity": "Medium",
+    "insider_signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "Moderate-high logon/logoff activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 80,
+    "severity": "High",
+    "correlation_summary": "Invoice INV_0285485 has a business risk score of 75 due to Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected. The case is correlated with insider-risk user DTAA/BGF0236 with insider score 45. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 80.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Supplier compliance policy violation: blacklisted supplier involved.",
+      "Procurement policy violation: split invoice pattern suggests threshold bypass risk.",
+      "Operational anomaly: invoice submitted during unusual time window.",
+      "Insider risk observation: medium user behavior risk."
+    ],
+    "controls_triggered": [
+      "Supplier manual compliance review required.",
+      "Procurement audit review required.",
+      "Require analyst review before release.",
+      "Attach user activity context to investigation.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Compliance Team",
+      "Procurement Audit",
+      "SOC Analyst"
+    ],
+    "final_recommended_action": "Hold payment for manual review and escalate to Finance + relevant risk owners.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 9,
+    "ranking_reason": "Ranked #9 because this case combines Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected, insider-risk score 45, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Failed",
+        "reason": "Supplier is blacklisted"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Failed",
+        "reason": "Split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Failed",
+        "reason": "Late-night invoice submission detected"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Warning",
+        "reason": "Insider risk score is 45"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 80"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation."
+  },
+  {
+    "correlation_case_id": "RL-CORR-0010",
+    "business_case_id": "RL-CASE-1905",
+    "invoice_id": "INV_0069589",
+    "supplier_id": "63b4c08b-6b8e-469f-9538-5b0e34f3193c",
+    "department_id": "DPT_021",
+    "invoice_amount": 2638.22,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "Supplier is blacklisted",
+      "Split invoice pattern detected",
+      "Late-night invoice submission detected"
+    ],
+    "business_recommended_next_step": "Hold payment and send supplier for manual compliance review.",
+    "insider_case_id": "IR-USER-0012",
+    "insider_user": "DTAA/AGW0182",
+    "insider_risk_score": 45,
+    "insider_severity": "Medium",
+    "insider_signals": [
+      "High total user activity",
+      "High HTTP/web activity",
+      "High logon/logoff activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 80,
+    "severity": "High",
+    "correlation_summary": "Invoice INV_0069589 has a business risk score of 75 due to Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected. The case is correlated with insider-risk user DTAA/AGW0182 with insider score 45. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 80.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Supplier compliance policy violation: blacklisted supplier involved.",
+      "Procurement policy violation: split invoice pattern suggests threshold bypass risk.",
+      "Operational anomaly: invoice submitted during unusual time window.",
+      "Insider risk observation: medium user behavior risk."
+    ],
+    "controls_triggered": [
+      "Supplier manual compliance review required.",
+      "Procurement audit review required.",
+      "Require analyst review before release.",
+      "Attach user activity context to investigation.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Compliance Team",
+      "Procurement Audit",
+      "SOC Analyst"
+    ],
+    "final_recommended_action": "Hold payment for manual review and escalate to Finance + relevant risk owners.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 10,
+    "ranking_reason": "Ranked #10 because this case combines Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected, insider-risk score 45, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Failed",
+        "reason": "Supplier is blacklisted"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Failed",
+        "reason": "Split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Failed",
+        "reason": "Late-night invoice submission detected"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Warning",
+        "reason": "Insider risk score is 45"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 80"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation."
+  }
+]

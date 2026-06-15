@@ -1,0 +1,273 @@
+{
+  "agent_name": "RavenLedger Supervisor Agent",
+  "agent_version": "v2_multi_agent",
+  "status": "completed",
+  "selected_mode": "insider_behavior",
+  "investigation_focus": {
+    "mode": "insider_behavior",
+    "label": "Insider Behavior Investigation",
+    "description": "Focuses on suspicious users, logon/device/http activity, insider score, and user behavior signals attached to the payment-risk case.",
+    "primary_agents": [
+      "Insider Behavior Agent",
+      "Correlation Agent",
+      "Policy Decision Agent"
+    ],
+    "focus_fields": [
+      "insider_user",
+      "insider_risk_score",
+      "insider_signals",
+      "insider_severity"
+    ],
+    "recommended_view": "investigation_case",
+    "prompt": "Investigate insider behavior linked to risky ERP payment activity."
+  },
+  "started_at": "2026-06-15T06:38:52.085217+00:00",
+  "completed_at": "2026-06-15T06:40:25.022944+00:00",
+  "user_prompt": "Investigate insider behavior linked to risky ERP payment activity.",
+  "splunk_mode": "Live Splunk REST/Python adapter",
+  "mcp_status": "MCP-ready adapter architecture; REST adapter used for stable demo.",
+  "agents": [
+    {
+      "agent": "Business Risk Agent",
+      "status": "completed",
+      "records": 10,
+      "output": "top_business_risk_cases.json",
+      "primary_for_selected_mode": false
+    },
+    {
+      "agent": "Insider Behavior Agent",
+      "status": "completed",
+      "records": 10,
+      "output": "top_insider_risk_users.json",
+      "primary_for_selected_mode": true
+    },
+    {
+      "agent": "Splunk Evidence Agent",
+      "status": "completed",
+      "records": 20,
+      "output": "splunk_evidence_sample.json",
+      "primary_for_selected_mode": false
+    },
+    {
+      "agent": "Correlation Agent",
+      "status": "completed",
+      "records": 10,
+      "output": "ravenledger_correlated_cases.json",
+      "primary_for_selected_mode": true
+    },
+    {
+      "agent": "Policy Decision Agent",
+      "status": "completed",
+      "records": 10,
+      "output": "ravenledger_policy_cases.json",
+      "primary_for_selected_mode": true
+    },
+    {
+      "agent": "Audit Report Agent",
+      "status": "completed",
+      "records": 10,
+      "output": "data/processed/reports/*.md",
+      "primary_for_selected_mode": false
+    },
+    {
+      "agent": "Human Action Agent",
+      "status": "ready",
+      "records": 0,
+      "output": "action_log.json",
+      "primary_for_selected_mode": false
+    }
+  ],
+  "top_case": {
+    "correlation_case_id": "RL-CORR-0001",
+    "business_case_id": "RL-CASE-0135",
+    "invoice_id": "INV_0249564",
+    "supplier_id": "67443fb8-81bd-45d5-b5a6-571c4fa5c35e",
+    "department_id": "DPT_008",
+    "invoice_amount": 7135.49,
+    "currency": "ZAR",
+    "business_risk_score": 75,
+    "business_severity": "High",
+    "business_reasons": [
+      "Fraud label present",
+      "Supplier is blacklisted",
+      "Split invoice pattern detected",
+      "Late-night invoice submission detected"
+    ],
+    "business_recommended_next_step": "Hold payment and send supplier for manual compliance review.",
+    "insider_case_id": "IR-USER-0001",
+    "insider_user": "DTAA/ABB0272",
+    "insider_risk_score": 80,
+    "insider_severity": "Critical",
+    "insider_signals": [
+      "Very high total user activity",
+      "Very high device connect/disconnect activity",
+      "High HTTP/web activity",
+      "High logon/logoff activity"
+    ],
+    "splunk_evidence_package_id": "SPL-PKG-0001",
+    "splunk_query_name": "sample_security_events",
+    "splunk_spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+    "splunk_evidence_count": 20,
+    "splunk_evidence_sample": [
+      {
+        "evidence_id": "SPL-EVID-0001",
+        "time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer",
+        "raw": {
+          "_time": "2019-09-19T23:40:50.000+05:30",
+          "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+          "sourcetype": "ess_content_importer",
+          "source": "ess_content_importer"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0002",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0003",
+        "time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:57:09.296+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0004",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:ip",
+          "source": "stream:ip"
+        }
+      },
+      {
+        "evidence_id": "SPL-EVID-0005",
+        "time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp",
+        "raw": {
+          "_time": "2018-08-20T20:53:20.746+05:30",
+          "host": "gacrux.i-06fea586f3d3c8ce8",
+          "sourcetype": "stream:udp",
+          "source": "stream:udp"
+        }
+      }
+    ],
+    "combined_risk_score": 89,
+    "severity": "Critical",
+    "correlation_summary": "Invoice INV_0249564 has a business risk score of 75 due to Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected. The case is correlated with insider-risk user DTAA/ABB0272 with insider score 80. Live Splunk evidence contributed 20 telemetry events. Combined RavenLedger risk score is 89.",
+    "source_layers": [
+      "procurement_invoice_fraud_dataset",
+      "cert_r1_insider_threat_dataset",
+      "splunk_botsv3_live_search"
+    ],
+    "policy_violations": [
+      "Supplier compliance policy violation: blacklisted supplier involved.",
+      "Procurement policy violation: split invoice pattern suggests threshold bypass risk.",
+      "Operational anomaly: invoice submitted during unusual time window.",
+      "Insider risk policy warning: elevated suspicious user activity."
+    ],
+    "controls_triggered": [
+      "Supplier manual compliance review required.",
+      "Procurement audit review required.",
+      "Require analyst review before release.",
+      "Review user access/session behavior.",
+      "Attach live Splunk telemetry evidence to the case."
+    ],
+    "human_approval_required": true,
+    "escalation_targets": [
+      "Compliance Team",
+      "Procurement Audit",
+      "SOC Analyst",
+      "Security Operations Center"
+    ],
+    "final_recommended_action": "Hold payment immediately, escalate to Finance, SOC, Compliance, and generate audit report.",
+    "policy_engine_version": "v1_rule_based_enterprise_controls",
+    "rank": 1,
+    "ranking_reason": "Ranked #1 because this case combines Fraud label present, Supplier is blacklisted, Split invoice pattern detected, Late-night invoice submission detected, insider-risk score 80, and 20 live Splunk telemetry events.",
+    "control_checklist": [
+      {
+        "control_id": "CTRL-001",
+        "name": "Supplier Compliance Check",
+        "status": "Failed",
+        "reason": "Supplier is blacklisted"
+      },
+      {
+        "control_id": "CTRL-002",
+        "name": "Procurement Threshold Bypass Check",
+        "status": "Failed",
+        "reason": "Split invoice pattern detected"
+      },
+      {
+        "control_id": "CTRL-003",
+        "name": "Unusual Submission Time Check",
+        "status": "Failed",
+        "reason": "Late-night invoice submission detected"
+      },
+      {
+        "control_id": "CTRL-004",
+        "name": "Insider Behavior Context Check",
+        "status": "Failed",
+        "reason": "Insider risk score is 80"
+      },
+      {
+        "control_id": "CTRL-005",
+        "name": "Splunk Evidence Attachment",
+        "status": "Passed",
+        "reason": "20 live Splunk telemetry events attached"
+      },
+      {
+        "control_id": "CTRL-006",
+        "name": "Human Approval Requirement",
+        "status": "Required",
+        "reason": "Combined risk score is 89"
+      }
+    ],
+    "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation.",
+    "selected_mode": "insider_behavior",
+    "investigation_focus_label": "Insider Behavior Investigation",
+    "investigation_focus_description": "Focuses on suspicious users, logon/device/http activity, insider score, and user behavior signals attached to the payment-risk case.",
+    "focus_fields": [
+      "insider_user",
+      "insider_risk_score",
+      "insider_signals",
+      "insider_severity"
+    ],
+    "recommended_view": "investigation_case"
+  },
+  "summary": "RavenLedger ran a Insider Behavior Investigation and ranked RL-CORR-0001 as the priority case. Invoice INV_0249564 has combined risk score 89/100 with severity Critical. The supervisor coordinated business risk, insider behavior, live Splunk evidence, correlation, policy controls, and audit reporting. Recommended action: Hold payment immediately, escalate to Finance, SOC, Compliance, and generate audit report.",
+  "report_paths": [
+    "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0001.md",
+    "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0002.md",
+    "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0003.md",
+    "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0004.md",
+    "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0005.md",
+    "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0006.md",
+    "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0007.md",
+    "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0008.md",
+    "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0009.md",
+    "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0010.md"
+  ]
+}

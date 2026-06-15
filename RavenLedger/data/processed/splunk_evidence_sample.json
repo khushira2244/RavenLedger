@@ -1,0 +1,272 @@
+{
+  "evidence_package_id": "SPL-PKG-0001",
+  "query_name": "sample_security_events",
+  "spl": "index=botsv3 earliest=0\n| table _time host sourcetype source\n| head 20",
+  "evidence_count": 20,
+  "evidence": [
+    {
+      "evidence_id": "SPL-EVID-0001",
+      "time": "2019-09-19T23:40:50.000+05:30",
+      "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+      "sourcetype": "ess_content_importer",
+      "source": "ess_content_importer",
+      "raw": {
+        "_time": "2019-09-19T23:40:50.000+05:30",
+        "host": "OD-FM-NA-i-0ad2d665d4bdace22.amazonaws.com",
+        "sourcetype": "ess_content_importer",
+        "source": "ess_content_importer"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0002",
+      "time": "2018-08-20T20:57:09.296+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:ip",
+      "source": "stream:ip",
+      "raw": {
+        "_time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0003",
+      "time": "2018-08-20T20:57:09.296+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:udp",
+      "source": "stream:udp",
+      "raw": {
+        "_time": "2018-08-20T20:57:09.296+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0004",
+      "time": "2018-08-20T20:53:20.746+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:ip",
+      "source": "stream:ip",
+      "raw": {
+        "_time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0005",
+      "time": "2018-08-20T20:53:20.746+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:udp",
+      "source": "stream:udp",
+      "raw": {
+        "_time": "2018-08-20T20:53:20.746+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0006",
+      "time": "2018-08-20T20:52:39.897+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:ip",
+      "source": "stream:ip",
+      "raw": {
+        "_time": "2018-08-20T20:52:39.897+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0007",
+      "time": "2018-08-20T20:52:39.897+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:udp",
+      "source": "stream:udp",
+      "raw": {
+        "_time": "2018-08-20T20:52:39.897+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0008",
+      "time": "2018-08-20T20:51:59.095+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:udp",
+      "source": "stream:udp",
+      "raw": {
+        "_time": "2018-08-20T20:51:59.095+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0009",
+      "time": "2018-08-20T20:51:59.095+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:ip",
+      "source": "stream:ip",
+      "raw": {
+        "_time": "2018-08-20T20:51:59.095+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0010",
+      "time": "2018-08-20T20:50:47.588+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:ip",
+      "source": "stream:ip",
+      "raw": {
+        "_time": "2018-08-20T20:50:47.588+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0011",
+      "time": "2018-08-20T20:50:47.588+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:udp",
+      "source": "stream:udp",
+      "raw": {
+        "_time": "2018-08-20T20:50:47.588+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0012",
+      "time": "2018-08-20T20:50:37.697+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:udp",
+      "source": "stream:udp",
+      "raw": {
+        "_time": "2018-08-20T20:50:37.697+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0013",
+      "time": "2018-08-20T20:50:37.697+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:ip",
+      "source": "stream:ip",
+      "raw": {
+        "_time": "2018-08-20T20:50:37.697+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0014",
+      "time": "2018-08-20T20:49:27.039+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:udp",
+      "source": "stream:udp",
+      "raw": {
+        "_time": "2018-08-20T20:49:27.039+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0015",
+      "time": "2018-08-20T20:49:27.039+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:ip",
+      "source": "stream:ip",
+      "raw": {
+        "_time": "2018-08-20T20:49:27.039+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0016",
+      "time": "2018-08-20T20:46:17.319+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:udp",
+      "source": "stream:udp",
+      "raw": {
+        "_time": "2018-08-20T20:46:17.319+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:udp",
+        "source": "stream:udp"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0017",
+      "time": "2018-08-20T20:46:17.319+05:30",
+      "host": "gacrux.i-06fea586f3d3c8ce8",
+      "sourcetype": "stream:ip",
+      "source": "stream:ip",
+      "raw": {
+        "_time": "2018-08-20T20:46:17.319+05:30",
+        "host": "gacrux.i-06fea586f3d3c8ce8",
+        "sourcetype": "stream:ip",
+        "source": "stream:ip"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0018",
+      "time": "2018-08-20T15:30:22.000+05:30",
+      "host": "serverless",
+      "sourcetype": "aws:cloudwatchlogs:vpcflow",
+      "source": "lambda:vpcflowlogs:us-west-1",
+      "raw": {
+        "_time": "2018-08-20T15:30:22.000+05:30",
+        "host": "serverless",
+        "sourcetype": "aws:cloudwatchlogs:vpcflow",
+        "source": "lambda:vpcflowlogs:us-west-1"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0019",
+      "time": "2018-08-20T15:30:22.000+05:30",
+      "host": "serverless",
+      "sourcetype": "aws:cloudwatchlogs:vpcflow",
+      "source": "lambda:vpcflowlogs:us-west-1",
+      "raw": {
+        "_time": "2018-08-20T15:30:22.000+05:30",
+        "host": "serverless",
+        "sourcetype": "aws:cloudwatchlogs:vpcflow",
+        "source": "lambda:vpcflowlogs:us-west-1"
+      }
+    },
+    {
+      "evidence_id": "SPL-EVID-0020",
+      "time": "2018-08-20T15:30:22.000+05:30",
+      "host": "serverless",
+      "sourcetype": "aws:cloudwatchlogs:vpcflow",
+      "source": "lambda:vpcflowlogs:us-west-1",
+      "raw": {
+        "_time": "2018-08-20T15:30:22.000+05:30",
+        "host": "serverless",
+        "sourcetype": "aws:cloudwatchlogs:vpcflow",
+        "source": "lambda:vpcflowlogs:us-west-1"
+      }
+    }
+  ],
+  "source_layer": "splunk_botsv3_live_search",
+  "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation.",
+  "splunk_access_mode": "REST/Python live adapter",
+  "mcp_ready": true
+}

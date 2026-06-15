@@ -1,0 +1,167 @@
+[
+  {
+    "insider_case_id": "IR-USER-0001",
+    "user": "DTAA/ABB0272",
+    "logon_events": 137,
+    "device_events": 655,
+    "http_events": 580,
+    "total_events": 1372,
+    "insider_risk_score": 80,
+    "severity": "Critical",
+    "signals": [
+      "Very high total user activity",
+      "Very high device connect/disconnect activity",
+      "High HTTP/web activity",
+      "High logon/logoff activity"
+    ],
+    "source_layer": "cert_r1_insider_threat_dataset"
+  },
+  {
+    "insider_case_id": "IR-USER-0002",
+    "user": "DTAA/AFH0331",
+    "logon_events": 115,
+    "device_events": 520,
+    "http_events": 623,
+    "total_events": 1258,
+    "insider_risk_score": 75,
+    "severity": "High",
+    "signals": [
+      "Very high total user activity",
+      "High device connect/disconnect activity",
+      "Very high HTTP/web activity",
+      "Moderate-high logon/logoff activity"
+    ],
+    "source_layer": "cert_r1_insider_threat_dataset"
+  },
+  {
+    "insider_case_id": "IR-USER-0003",
+    "user": "DTAA/AMA0191",
+    "logon_events": 122,
+    "device_events": 671,
+    "http_events": 422,
+    "total_events": 1215,
+    "insider_risk_score": 75,
+    "severity": "High",
+    "signals": [
+      "Very high total user activity",
+      "Very high device connect/disconnect activity",
+      "High HTTP/web activity",
+      "Moderate-high logon/logoff activity"
+    ],
+    "source_layer": "cert_r1_insider_threat_dataset"
+  },
+  {
+    "insider_case_id": "IR-USER-0004",
+    "user": "DTAA/AJB0016",
+    "logon_events": 126,
+    "device_events": 589,
+    "http_events": 469,
+    "total_events": 1184,
+    "insider_risk_score": 60,
+    "severity": "High",
+    "signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "High HTTP/web activity",
+      "High logon/logoff activity"
+    ],
+    "source_layer": "cert_r1_insider_threat_dataset"
+  },
+  {
+    "insider_case_id": "IR-USER-0006",
+    "user": "DTAA/AFR0646",
+    "logon_events": 79,
+    "device_events": 459,
+    "http_events": 639,
+    "total_events": 1177,
+    "insider_risk_score": 55,
+    "severity": "Medium",
+    "signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "Very high HTTP/web activity"
+    ],
+    "source_layer": "cert_r1_insider_threat_dataset"
+  },
+  {
+    "insider_case_id": "IR-USER-0008",
+    "user": "DTAA/AFN0918",
+    "logon_events": 113,
+    "device_events": 405,
+    "http_events": 527,
+    "total_events": 1045,
+    "insider_risk_score": 55,
+    "severity": "Medium",
+    "signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "High HTTP/web activity",
+      "Moderate-high logon/logoff activity"
+    ],
+    "source_layer": "cert_r1_insider_threat_dataset"
+  },
+  {
+    "insider_case_id": "IR-USER-0007",
+    "user": "DTAA/AJC0266",
+    "logon_events": 126,
+    "device_events": 590,
+    "http_events": 386,
+    "total_events": 1102,
+    "insider_risk_score": 50,
+    "severity": "Medium",
+    "signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "High logon/logoff activity"
+    ],
+    "source_layer": "cert_r1_insider_threat_dataset"
+  },
+  {
+    "insider_case_id": "IR-USER-0005",
+    "user": "DTAA/ACH0803",
+    "logon_events": 91,
+    "device_events": 516,
+    "http_events": 576,
+    "total_events": 1183,
+    "insider_risk_score": 45,
+    "severity": "Medium",
+    "signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "High HTTP/web activity"
+    ],
+    "source_layer": "cert_r1_insider_threat_dataset"
+  },
+  {
+    "insider_case_id": "IR-USER-0009",
+    "user": "DTAA/BGF0236",
+    "logon_events": 114,
+    "device_events": 592,
+    "http_events": 303,
+    "total_events": 1009,
+    "insider_risk_score": 45,
+    "severity": "Medium",
+    "signals": [
+      "High total user activity",
+      "High device connect/disconnect activity",
+      "Moderate-high logon/logoff activity"
+    ],
+    "source_layer": "cert_r1_insider_threat_dataset"
+  },
+  {
+    "insider_case_id": "IR-USER-0012",
+    "user": "DTAA/AGW0182",
+    "logon_events": 134,
+    "device_events": 352,
+    "http_events": 425,
+    "total_events": 911,
+    "insider_risk_score": 45,
+    "severity": "Medium",
+    "signals": [
+      "High total user activity",
+      "High HTTP/web activity",
+      "High logon/logoff activity"
+    ],
+    "source_layer": "cert_r1_insider_threat_dataset"
+  }
+]
