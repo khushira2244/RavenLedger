@@ -1,5 +1,8 @@
 # RavenLedger
 
+<img width="937" height="443" alt="image" src="https://github.com/user-attachments/assets/0dc9088d-b340-4fb4-9869-28a40a24c8ca" />
+
+
 ## Multi-Agent ERP Payment Risk Investigator on Splunk
 
 RavenLedger investigates risky enterprise payments before money leaves the organization. It combines ERP-style payment fraud signals, insider behavior, live Splunk evidence, named controls, human-approved actions, and audit-ready reporting into one unified investigation case.
@@ -12,13 +15,13 @@ RavenLedger answers one critical enterprise question:
 
 ## Product & Deployment
 
-Frontend Demo: `<ADD_NETLIFY_LINK_HERE>`
+Frontend Demo: `https://ravenledger.netlify.app/`
 
 Backend: Local FastAPI backend connected to local Splunk Enterprise
 
 Splunk: Splunk Enterprise with BOTS v3 dataset
 
-Repository: `<ADD_GITHUB_LINK_HERE>`
+Repository: `https://github.com/khushira2244/RavenLedger`
 
 The frontend is deployed for presentation. The full live Splunk workflow currently runs locally because Splunk Enterprise and BOTS v3 are installed in the local development environment. Backend deployment on Google Cloud is planned as the next step.
 
@@ -172,6 +175,8 @@ Recommended Action: Hold payment immediately, escalate to Finance, SOC, and Comp
 
 ## Architecture
 
+
+
 RavenLedger follows this investigation chain:
 
 ```text
@@ -204,7 +209,7 @@ ERP-style payment risk
 Architecture image:
 
 ```text
-<ADD_ARCHITECTURE_IMAGE_HERE>
+<img width="764" height="383" alt="image" src="https://github.com/user-attachments/assets/3832c9c3-7015-4042-bb88-eda7373dd76b" />
 ```
 
 ---
@@ -290,6 +295,9 @@ insider_behavior
 splunk_evidence
 policy_audit
 ```
+
+<img width="796" height="417" alt="image" src="https://github.com/user-attachments/assets/b023291f-f53f-4c68-8cac-92e058a99124" />
+
 
 ### Full Multi-Agent Investigation
 
@@ -555,7 +563,7 @@ Splunk Enterprise UI: http://localhost:8000
 Splunk REST API: https://localhost:8089
 RavenLedger backend: http://localhost:8001
 Frontend local: http://localhost:5173
-Frontend deployed: <ADD_NETLIFY_LINK_HERE>
+Frontend deployed: https://ravenledger.netlify.app/
 ```
 
 ---
