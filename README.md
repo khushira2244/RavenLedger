@@ -1,212 +1,579 @@
+# RavenLedger
 
-# 1st plan
+## Multi-Agent ERP Payment Risk Investigator on Splunk
 
+RavenLedger investigates risky enterprise payments before money leaves the organization. It combines ERP-style payment fraud signals, insider behavior, live Splunk evidence, named controls, human-approved actions, and audit-ready reporting into one unified investigation case.
 
-# **Sift Sentinel**
+RavenLedger answers one critical enterprise question:
 
-## **Agentic ERP RiskOps Investigator on Splunk**
-
-Core idea:
-
-> **Sift Sentinel is not a connector, not a dashboard, and not a generic fraud detector. It is an agentic ERP RiskOps investigator that turns Splunk telemetry and ERP business events into one audit-ready risk case.** 
-
-And yes — in 21 days, we can build a strong version if we separate **core product** from **Splunk-native enhancement**.
+> Should this payment leave the enterprise right now — and what evidence supports that decision?
 
 ---
 
-# Final Splunk Stack We Will Use
+## Product & Deployment
 
-| Layer                              | Splunk Capability                                      | How Sift Sentinel uses it                                                   |
-| ---------------------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------- |
-| **Core log/search layer**          | Splunk Cloud / Enterprise or local SPL-style simulator | Store/search ERP, identity, security, and observability events              |
-| **Natural language investigation** | Splunk AI Assistant-style NL → SPL                     | User asks: “Investigate high-risk ERP payments,” system shows generated SPL |
-| **Agentic query execution**        | Splunk MCP Server                                      | Agent queries Splunk indexes securely and performs multi-step investigation |
-| **Security detections**            | Enterprise Security-style detections                   | Insider abuse, role escalation, unusual login, suspicious access            |
-| **Response workflow**              | SOAR-style actions                                     | Escalate case, block/review payment, notify SOC/finance, create audit task  |
-| **Observability panel**            | ITSI / Observability-style health                      | ERP payment batch health, job failures, approval queue delay                |
+Frontend Demo: `<ADD_NETLIFY_LINK_HERE>`
 
-Splunk’s hackathon resources explicitly mention AI for Splunk Apps, MCP Server, AI Assistant, and AI Toolkit as the latest AI capabilities for participants. ([Splunk][1]) The MCP Server is designed to connect AI assistants and agents with Splunk platform data through a standardized secure interface. ([Splunk Docs][2]) Splunk AI Assistant helps users generate, edit, and understand SPL using natural language. ([Splunk][3])
+Backend: Local FastAPI backend connected to local Splunk Enterprise
+
+Splunk: Splunk Enterprise with BOTS v3 dataset
+
+Repository: `<ADD_GITHUB_LINK_HERE>`
+
+The frontend is deployed for presentation. The full live Splunk workflow currently runs locally because Splunk Enterprise and BOTS v3 are installed in the local development environment. Backend deployment on Google Cloud is planned as the next step.
 
 ---
 
-# Final Product Flow
+## Quick Start
+
+### 1. Start Splunk Enterprise
+
+Open Splunk Enterprise:
 
 ```text
-User Prompt:
-"Investigate high-risk ERP payments in the last 24 hours."
+http://localhost:8000
+```
 
-        ↓
+Verify that BOTS v3 data is searchable in Splunk Search & Reporting:
 
-AI Assistant-style NL → SPL:
-Generates searches for payment, invoice, vendor, login, role, alert, and job-health events.
+```spl
+index=botsv3 earliest=0 | head 5
+```
 
-        ↓
+### 2. Set Splunk environment variables
 
-MCP / Splunk Query Layer:
-Runs searches against Splunk or local SPL-style simulator.
+PowerShell:
 
-        ↓
+```powershell
+$env:SPLUNK_HOST="https://localhost:8089"
+$env:SPLUNK_USERNAME="YOUR_SPLUNK_USERNAME"
+$env:SPLUNK_PASSWORD="YOUR_SPLUNK_PASSWORD"
+```
 
-Sift Sentinel Agent:
-Correlates vendor → PO → invoice → payment → user → role → login → alert.
+Or create a `.env` file inside the `RavenLedger/` folder:
 
-        ↓
+```env
+SPLUNK_HOST=https://localhost:8089
+SPLUNK_USERNAME=YOUR_SPLUNK_USERNAME
+SPLUNK_PASSWORD=YOUR_SPLUNK_PASSWORD
+```
 
-Risk Engine:
-Calculates fraud, insider abuse, vendor risk, policy risk, observability risk.
+### 3. Run the backend API
 
-        ↓
+From the backend folder:
 
-Timeline Engine:
-Builds chronological evidence chain.
+```powershell
+cd C:\Users\Khushboo\Documents\splunk\RavenLedger\backend
+python -m uvicorn main:app --reload --host 0.0.0.0 --port 8001
+```
 
-        ↓
+Check backend health:
 
-SOAR-style Action Layer:
-Recommend block / escalate / manual verification / SOC review.
+```text
+http://localhost:8001/health
+```
 
-        ↓
+Expected response:
 
-Audit Engine:
-Generates audit-ready risk case.
+```json
+{
+  "status": "healthy",
+  "service": "ravenledger-api",
+  "splunk_mode": "REST/Python live adapter",
+  "mcp_status": "MCP-ready adapter architecture"
+}
+```
+
+### 4. Run the frontend locally
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend local URL:
+
+```text
+http://localhost:5173
 ```
 
 ---
 
-# Product Modules We Will Complete
+## What is RavenLedger?
 
-| Module                                | Splunk capability connected             | Output                                                             |
-| ------------------------------------- | --------------------------------------- | ------------------------------------------------------------------ |
-| **Payment Fraud Investigation**       | Splunk Enterprise / SPL search          | Finds risky invoices/payments                                      |
-| **Insider / Privileged Access Abuse** | ES-style detections + UEBA-style logic  | Finds unusual login, role escalation, same-user conflict           |
-| **Vendor / Procurement Risk**         | SPL correlation                         | Finds bank changes, duplicate vendor signals, risky vendor history |
-| **Audit / Policy Violation Agent**    | AI reasoning + evidence from SPL        | Finds SoD, manual verification, approval violations                |
-| **Observability Mini-Layer**          | ITSI / Observability-style health panel | Shows ERP job failure/payment batch delay                          |
-| **SOAR-style Action Panel**           | Human-approved workflow                 | Escalate/block/review/export report                                |
+RavenLedger is an agentic RiskOps investigation system for high-risk enterprise payments.
 
-This matches our final five-module product direction. 
+A risky payment is not only a finance issue. It can involve invoice fraud, supplier risk, insider behavior, security telemetry, policy violations, manual approval requirements, and audit evidence.
+
+RavenLedger turns scattered enterprise signals into one evidence-backed investigation case.
 
 ---
 
-# 21-Day Plan to Build the Best Version
+## Problem
 
-## Phase 1 — Product Foundation + Data Layer
+Enterprise risk is expensive and fragmented.
 
-|   Day | Build target                     | Output                                                 |
-| ----: | -------------------------------- | ------------------------------------------------------ |
-| **1** | Repo + architecture + README     | Clean project foundation                               |
-| **2** | Data strategy + folder structure | `data/raw`, `data/erp_bridge`, `data/processed`        |
-| **3** | ERP bridge schema                | vendor, PO, invoice, payment, approval, user role      |
-| **4** | Splunk-style event schema        | auth, IAM, ERP transaction, security alert, job health |
-| **5** | Seed 3 strong demo cases         | Critical, medium-risk, safe/false-positive             |
+Finance teams see invoice fraud, blacklisted suppliers, duplicate or split invoice patterns, and abnormal payment timing.
 
-Use public security/fraud datasets where possible and an anonymized ERP bridge layer; this was our fixed data strategy. 
+SOC teams see suspicious logins, device activity, web behavior, and security events.
 
----
+Audit teams see policy violations, approval gaps, and manual review requirements.
 
-## Phase 2 — Core Risk Intelligence
+Operations teams see process health, log availability, job failures, and payment workflow delays.
 
-|    Day | Build target                     | Output                                                  |
-| -----: | -------------------------------- | ------------------------------------------------------- |
-|  **6** | Data loader                      | Load ERP + Splunk-style logs                            |
-|  **7** | Payment Fraud Engine             | invoice > PO, incomplete GR, bank change                |
-|  **8** | Insider Abuse Engine             | unusual IP, temp role, failed login, same-user conflict |
-|  **9** | Vendor / Procurement Risk Engine | risky vendor, duplicate bank, abnormal PO               |
-| **10** | Combined Risk Engine             | 0–100 score + severity                                  |
+The data exists, but Finance, SOC, Audit, and Operations usually see it separately.
 
 ---
 
-## Phase 3 — Agentic Investigation
+## Market Gap
 
-|    Day | Build target             | Output                                              |
-| -----: | ------------------------ | --------------------------------------------------- |
-| **11** | Correlation engine       | Link vendor → PO → invoice → payment → user → login |
-| **12** | Timeline engine          | Chronological evidence timeline                     |
-| **13** | Policy violation agent   | SoD, approval bypass, manual verification           |
-| **14** | AI explanation generator | Grounded explanation from evidence                  |
-| **15** | Audit report generator   | Markdown/HTML audit-ready case                      |
+The market solves risk in separate lanes.
 
----
+Finance fraud tools focus on invoice checks, vendor risk, and duplicate payments.
 
-## Phase 4 — Splunk-Native Layer
+SOC and security platforms focus on alerts, user behavior, and telemetry.
 
-|    Day | Build target                | Output                                         |
-| -----: | --------------------------- | ---------------------------------------------- |
-| **16** | SPL query simulator         | Show generated SPL for each investigation step |
-| **17** | AI Assistant-style NL → SPL | Prompt becomes multiple SPL searches           |
-| **18** | MCP-style agent adapter     | Agent calls query tools step-by-step           |
-| **19** | SOAR-style action panel     | Block/review/escalate/create case actions      |
-| **20** | Observability mini-layer    | ERP job health, batch delay, ingestion health  |
-| **21** | Final polish                | demo video, README, screenshots, Devpost text  |
+Audit and GRC tools focus on controls, compliance, and documentation.
+
+SOAR tools focus on playbooks, escalation, and response.
+
+The missing layer is one shared investigation case before payment release.
+
+RavenLedger creates that shared investigation layer by combining payment risk, insider context, Splunk evidence, named controls, and human-approved action into one audit-ready case.
 
 ---
 
-# What “All Capabilities” Means Practically
+## Core Demo Scenario
 
-We should not depend on full real enterprise access for everything. We implement it like this:
+A high-risk invoice is about to be released.
 
-| Capability                               | Hackathon implementation                                                         |
-| ---------------------------------------- | -------------------------------------------------------------------------------- |
-| **Splunk Cloud/Enterprise**              | Real if available; fallback local simulator                                      |
-| **AI Assistant-style NL → SPL**          | Build our own NL prompt → SPL query templates                                    |
-| **MCP Server**                           | Use if setup works; fallback: MCP-style tool wrapper calling local/Splunk search |
-| **Enterprise Security-style detections** | Implement detection rules and label them ES-style                                |
-| **SOAR-style action**                    | Human-approved action buttons, no real money movement                            |
-| **ITSI/Observability-style panel**       | ERP health dashboard with job/payment batch status                               |
+RavenLedger detects:
 
-This way, even if one Splunk setup is difficult, the product still works.
+* fraud label present
+* supplier is blacklisted
+* split invoice pattern detected
+* late-night invoice submission detected
+* insider-risk user activity
+* live Splunk telemetry evidence
 
----
-
-# Final Demo Script
+The system generates:
 
 ```text
-A finance payment is about to be released.
-
-Sift Sentinel receives the user prompt:
-"Investigate high-risk ERP payments in the last 24 hours."
-
-The AI Assistant-style layer generates SPL searches.
-
-The agent uses the Splunk/MCP query layer to search payment, invoice, vendor, login, role-change, alert, and ERP job-health events.
-
-It finds:
-- Vendor bank account changed recently
-- Invoice exceeds purchase order
-- Goods receipt is incomplete
-- Same user changed bank and approved invoice
-- Temporary finance role was assigned
-- User logged in from unusual IP
-- Payment batch had a delay
-- Policy requires manual verification
-
-Sift Sentinel produces:
-Risk Score: 96/100
+Case: RL-CORR-0001
+Invoice: INV_0249564
+Risk Score: 89/100
 Severity: Critical
-Recommendation: Block payment release, escalate to Finance + SOC, verify vendor bank, review temporary role access, generate audit report.
+Splunk Evidence: 20 live events
+Recommended Action: Hold payment immediately, escalate to Finance, SOC, and Compliance, and generate audit report.
 ```
-
-This main demo aligns with our planned high-risk ERP payment case. 
 
 ---
 
+## Architecture
 
-
+RavenLedger follows this investigation chain:
 
 ```text
-Sift Sentinel
-├── Splunk search/log layer
-├── AI Assistant-style NL → SPL
-├── MCP-style agent query layer
-├── Enterprise Security-style detections
-├── SOAR-style human action panel
-├── ITSI/Observability-style health panel
-└── Audit-ready ERP RiskOps case report
+Business Risk
+   ↓
+Insider Behavior
+   ↓
+Splunk Evidence
+   ↓
+Correlation
+   ↓
+Policy Decision
+   ↓
+Audit Report
+   ↓
+Human Action
 ```
 
+The system combines:
 
-The key is: **build the core product first, then layer Splunk-native features on top.**
+```text
+ERP-style payment risk
++ insider behavior
++ Splunk evidence
++ named controls
++ human approval
++ audit reporting
+```
 
-[1]: https://www.splunk.com/en_us/blog/artificial-intelligence/splunk-agentic-ops-hackathon.html?utm_source=chatgpt.com "Announcing the Splunk Agentic Ops Hackathon"
-[2]: https://help.splunk.com/splunk-cloud-platform/mcp-server-for-splunk-platform/about-mcp-server-for-splunk-platform?utm_source=chatgpt.com "About MCP Server for Splunk platform"
-[3]: https://www.splunk.com/en_us/products/splunk-ai-assistant-for-spl.html?utm_source=chatgpt.com "Splunk AI Assistant for SPL"
+Architecture image:
+
+```text
+<ADD_ARCHITECTURE_IMAGE_HERE>
+```
+
+---
+
+## Product Flow
+
+```text
+User selects investigation mode
+        ↓
+RavenLedger Supervisor starts the investigation
+        ↓
+Specialist agents process business, user, Splunk, policy, and audit evidence
+        ↓
+RavenLedger builds a unified investigation case
+        ↓
+The case is ranked in a Top Risk Queue
+        ↓
+The system explains why the case is first
+        ↓
+Named controls are checked
+        ↓
+A human-approved action is recorded
+        ↓
+An audit-ready report is generated
+```
+
+---
+
+## Agents
+
+RavenLedger uses one supervisor and seven specialist agents.
+
+### 1. RavenLedger Supervisor Agent
+
+Coordinates the full investigation workflow, selects the investigation focus, runs specialist agents, and ranks the priority case.
+
+### 2. Business Risk Agent
+
+Detects risky invoices, supplier fraud signals, split invoice behavior, late-night submissions, and blacklisted supplier involvement.
+
+### 3. Insider Behavior Agent
+
+Analyzes suspicious user behavior using logon, device, and HTTP/web activity.
+
+### 4. Splunk Evidence Agent
+
+Runs SPL against Splunk Enterprise and retrieves live BOTS v3 telemetry evidence.
+
+Example SPL:
+
+```spl
+index=botsv3 earliest=0
+| table _time host sourcetype source
+| head 20
+```
+
+### 5. Correlation Agent
+
+Combines business risk, insider behavior, and Splunk telemetry into one unified investigation case.
+
+### 6. Policy Decision Agent
+
+Maps the case to named controls such as supplier compliance, procurement threshold bypass, unusual submission time, Splunk evidence attachment, and human approval requirement.
+
+### 7. Audit Report Agent
+
+Generates audit-ready markdown reports for each correlated case.
+
+### 8. Human Action Agent
+
+Records analyst-approved actions such as hold payment, escalate to SOC, send to finance review, generate audit report, or mark false positive.
+
+---
+
+## Investigation Modes
+
+The frontend selector supports five investigation modes:
+
+```text
+full
+payment_fraud
+insider_behavior
+splunk_evidence
+policy_audit
+```
+
+### Full Multi-Agent Investigation
+
+Runs all RavenLedger agents across business fraud, insider behavior, live Splunk evidence, policy controls, audit reporting, and human-action readiness.
+
+### Payment Fraud Investigation
+
+Focuses on invoice fraud, supplier risk, blacklisted supplier, split invoice pattern, late-night submission, invoice amount, and payment hold recommendation.
+
+### Insider Behavior Investigation
+
+Focuses on suspicious user behavior connected to the payment-risk case, including logon activity, device activity, HTTP/web activity, and insider-risk score.
+
+### Splunk Security Evidence Investigation
+
+Focuses on live Splunk telemetry, generated SPL, BOTS v3 evidence, hosts, sourcetypes, sources, timestamps, and Splunk access mode.
+
+### Policy & Audit Investigation
+
+Focuses on named controls, policy violations, controls triggered, escalation targets, human approval, recommended action, and audit report generation.
+
+---
+
+## Main API Endpoints
+
+Backend base URL:
+
+```text
+http://localhost:8001
+```
+
+Endpoints:
+
+```http
+GET  /health
+GET  /agent/modes
+GET  /agent/latest-result
+GET  /agent/run-investigation?mode=full
+GET  /agent/run-investigation?mode=payment_fraud
+GET  /agent/run-investigation?mode=insider_behavior
+GET  /agent/run-investigation?mode=splunk_evidence
+GET  /agent/run-investigation?mode=policy_audit
+GET  /cases/top-risk
+GET  /cases/{case_id}
+GET  /cases/{case_id}/summary
+GET  /reports
+GET  /reports/{case_id}
+POST /actions/simulate
+GET  /actions/log
+```
+
+---
+
+## Example Human Action Request
+
+```http
+POST /actions/simulate
+```
+
+Example body:
+
+```json
+{
+  "case_id": "RL-CORR-0001",
+  "action": "Hold Payment",
+  "actor": "Demo Analyst",
+  "reason": "Critical case with blacklisted supplier, insider-risk context, and live Splunk evidence."
+}
+```
+
+---
+
+## Data Used
+
+RavenLedger uses demo-safe and public datasets.
+
+### Procurement Invoice Fraud Dataset
+
+Used by:
+
+```text
+Business Risk Agent
+```
+
+Provides:
+
+```text
+invoice ID, supplier ID, department, amount, fraud labels, split invoice patterns, late-night submissions, supplier risk signals
+```
+
+### CERT r1 Insider Threat Dataset
+
+Used by:
+
+```text
+Insider Behavior Agent
+```
+
+Provides:
+
+```text
+user activity, logon/logoff behavior, device connect/disconnect behavior, HTTP/web activity patterns
+```
+
+### Splunk BOTS v3 via Splunk Enterprise
+
+Used by:
+
+```text
+Splunk Evidence Agent
+```
+
+Provides:
+
+```text
+_time, host, sourcetype, source, and live security/operational telemetry
+```
+
+---
+
+## Demo Pages
+
+The frontend demo contains the following flow:
+
+```text
+Landing Page
+   ↓
+Investigation Type Selector
+   ↓
+Command Center
+   ↓
+Investigation Case
+   ↓
+Splunk Evidence
+   ↓
+Audit & Human Action
+```
+
+### Landing Page
+
+Explains the product, the investigation chain, the evidence convergence, named controls, Splunk evidence, and human-in-loop response.
+
+### Investigation Type Selector
+
+Allows the user to choose one investigation mode:
+
+```text
+Full Multi-Agent Investigation
+Payment Fraud Investigation
+Insider Behavior Investigation
+Splunk Security Evidence Investigation
+Policy & Audit Investigation
+```
+
+### Command Center
+
+Shows the selected investigation mode, agent status, priority case, score, severity, and why the case was ranked first.
+
+### Investigation Case
+
+Shows business risk, insider behavior, and Splunk evidence converging into one unified case.
+
+### Splunk Evidence
+
+Shows generated SPL, plain-English explanation, live evidence count, and Splunk event samples.
+
+### Audit & Human Action
+
+Shows named controls, policy violations, escalation targets, recommended action, human action buttons, action log, and audit report.
+
+---
+
+## What Makes RavenLedger Different?
+
+Most tools look at one lane.
+
+Finance tools see invoices.
+
+SOC tools see alerts.
+
+Audit tools see controls.
+
+SOAR tools run playbooks.
+
+RavenLedger creates one shared investigation case before payment release.
+
+It combines:
+
+```text
+Payment risk
++ supplier context
++ insider behavior
++ live Splunk evidence
++ named controls
++ human-approved action
++ audit-ready reporting
+```
+
+---
+
+## Current Status
+
+Completed:
+
+```text
+- Multi-agent backend
+- Live Splunk REST/Python adapter
+- BOTS v3 evidence retrieval
+- Investigation mode selector support
+- Top Risk Queue
+- Ranking reason
+- Named controls checklist
+- Audit report generation
+- Human action simulation
+- Frontend demo flow
+- Local Splunk Enterprise integration
+```
+
+---
+
+## Future Expansion
+
+RavenLedger can expand into a broader enterprise RiskOps layer.
+
+### Splunk MCP Server Integration
+
+Allow agents to access Splunk through standard MCP tool-calling.
+
+### Splunk AI Assistant-style SPL Generation
+
+Convert analyst intent into SPL investigation playbooks.
+
+### Splunk AI Toolkit / MLTK
+
+Add anomaly scoring for insider behavior, payment risk, and operational telemetry.
+
+### Splunk Hosted Models
+
+Evaluate hosted security models for deeper alert enrichment and security reasoning.
+
+### SOAR Workflow Integration
+
+Trigger approved playbooks after human confirmation.
+
+### ERP / SAP / Oracle Connectors
+
+Connect to real payment, vendor, purchase order, approval, and supplier master data.
+
+### Operations Expansion
+
+Add ERP job health, payment batch delay monitoring, ingestion health, and source/log availability checks.
+
+### Cloud Backend Deployment
+
+Deploy the backend on Google Cloud Run and support remote demo access.
+
+---
+
+## Local Demo Ports
+
+```text
+Splunk Enterprise UI: http://localhost:8000
+Splunk REST API: https://localhost:8089
+RavenLedger backend: http://localhost:8001
+Frontend local: http://localhost:5173
+Frontend deployed: <ADD_NETLIFY_LINK_HERE>
+```
+
+---
+
+## Demo Notes
+
+The live Splunk workflow is demonstrated locally.
+
+The frontend can be deployed publicly, while the full Splunk-powered investigation is reproducible locally from this repository.
+
+If the frontend is deployed on Netlify, the full live workflow requires the backend to be running locally or deployed separately. Google Cloud backend deployment is planned after the local demo is finalized.
+
+---
+
+## Conclusion
+
+RavenLedger turns scattered enterprise risk signals into one evidence-backed decision before money leaves the organization.
+
+It combines business payment risk, insider behavior, Splunk telemetry, policy controls, human approval, and audit reporting into a single investigation workflow.
+
+RavenLedger is built to help Finance, SOC, Audit, and Operations work from the same evidence-backed case instead of separate risk signals.
