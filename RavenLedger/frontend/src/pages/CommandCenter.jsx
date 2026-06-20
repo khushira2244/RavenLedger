@@ -4,14 +4,27 @@ import styles from './CommandCenter.module.css';
 import { runInvestigationApi, getTopRiskCases, getCase } from '../api/ravenledgerApi';
 
 const MODE_KEY = 'ravenledger_selected_mode';
+
+const RUN_COMPLETE_KEY = 'ravenledger:runComplete';
+const LAST_RUN_MODE_KEY = 'ravenledger:lastRunMode';
+
 const INVESTIGATION_CACHE_KEY = 'ravenledger:lastInvestigation';
 const INVESTIGATION_CACHE_TIME_KEY = 'ravenledger:lastInvestigationTime';
 const INVESTIGATION_CACHE_MODE_KEY = 'ravenledger:lastInvestigationMode';
+
 const TOP_CASES_KEY = 'ravenledger:topCases';
 const SELECTED_CASE_ID_KEY = 'ravenledger:selectedCaseId';
 const SELECTED_CASE_DETAIL_KEY = 'ravenledger:selectedCaseDetail';
 const SELECTED_REPORT_KEY = 'ravenledger:selectedReport';
 const SELECTED_ACTION_LOG_KEY = 'ravenledger:selectedActionLog';
+
+function safeJsonParse(value, fallback = null) {
+  try {
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
+}
 
 function saveCachedInvestigation(result, mode) {
   try {
@@ -28,14 +41,15 @@ function clearCachedInvestigation() {
     localStorage.removeItem(INVESTIGATION_CACHE_KEY);
     localStorage.removeItem(INVESTIGATION_CACHE_TIME_KEY);
     localStorage.removeItem(INVESTIGATION_CACHE_MODE_KEY);
+    localStorage.removeItem(RUN_COMPLETE_KEY);
+    localStorage.removeItem(LAST_RUN_MODE_KEY);
   } catch {
     // Ignore cache failure.
   }
 }
 
-function clearCaseContext() {
+function clearSelectedCaseContext() {
   try {
-    localStorage.removeItem(TOP_CASES_KEY);
     localStorage.removeItem(SELECTED_CASE_ID_KEY);
     localStorage.removeItem(SELECTED_CASE_DETAIL_KEY);
     localStorage.removeItem(SELECTED_REPORT_KEY);
@@ -45,9 +59,27 @@ function clearCaseContext() {
   }
 }
 
+function clearRunContext() {
+  try {
+    localStorage.removeItem(TOP_CASES_KEY);
+    clearSelectedCaseContext();
+  } catch {
+    // Ignore storage failure.
+  }
+}
+
 function saveTopCases(cases) {
   try {
     localStorage.setItem(TOP_CASES_KEY, JSON.stringify(cases));
+  } catch {
+    // Ignore cache failure.
+  }
+}
+
+function markRunComplete(mode) {
+  try {
+    localStorage.setItem(RUN_COMPLETE_KEY, 'true');
+    localStorage.setItem(LAST_RUN_MODE_KEY, mode);
   } catch {
     // Ignore cache failure.
   }
@@ -167,25 +199,6 @@ const STACK_CARDS = [
       { k: 'Risk review', v: 'Not triggered', vCls: 'evRed' },
     ],
   },
-  {
-    id: 6,
-    sc: 'sc6',
-    numPillStyle: { background: 'var(--mint)', color: 'var(--pine)' },
-    numLabel: 'Splunk · BOTS v3',
-    icon: '🔍',
-    title: 'Splunk Evidence',
-    body: 'Splunk has 20 live telemetry events correlated to this timeframe — host, sourcetype, source, and timestamps. Nobody has run the SPL. The evidence is sitting there, unattached to any case.',
-    badge: { text: '20 EVENTS · UNCORRELATED', cls: 'sbPine' },
-    evidenceLabel: 'Evidence from Splunk',
-    rightStyle: { background: 'rgba(6,78,59,.06)', borderColor: 'rgba(34,197,94,.2)' },
-    rows: [
-      { k: 'Index', v: 'botsv3', vCls: 'evGreen' },
-      { k: 'Events found', v: '20 live events', vCls: 'evGreen' },
-      { k: 'SPL generated', v: 'Not yet run', vCls: '' },
-      { k: 'Attached to case', v: 'No', vCls: 'evRed' },
-      { k: 'Access mode', v: 'REST · Live', vCls: 'evGreen' },
-    ],
-  },
 ];
 
 const AGENTS = [
@@ -232,20 +245,42 @@ export default function CommandCenter() {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 
-    setRunning(false);
-    setComplete(false);
-    setAgentSectionVisible(false);
-    setAgentStates(AGENTS.map(() => 'waiting'));
-    setResultVisible(false);
-    setVerdictVisible(false);
-    setBadgeComplete(false);
-    setApiResult(null);
-    setApiError('');
-    setTopCases([]);
-    setSelectedCaseId('');
-    setQueueVisible(false);
+    const cachedRunComplete = localStorage.getItem(RUN_COMPLETE_KEY) === 'true';
+    const lastRunMode = localStorage.getItem(LAST_RUN_MODE_KEY);
+    const cachedCases = safeJsonParse(localStorage.getItem(TOP_CASES_KEY), []);
+    const cachedSelectedCaseId = localStorage.getItem(SELECTED_CASE_ID_KEY) || '';
 
-    clearCaseContext();
+    const canRestore =
+      cachedRunComplete &&
+      lastRunMode === selectedMode &&
+      Array.isArray(cachedCases) &&
+      cachedCases.length > 0;
+
+    setRunning(false);
+    setAgentStates(AGENTS.map(() => 'waiting'));
+    setApiError('');
+
+    if (canRestore) {
+      setComplete(true);
+      setAgentSectionVisible(true);
+      setResultVisible(true);
+      setVerdictVisible(true);
+      setBadgeComplete(true);
+      setApiResult(safeJsonParse(localStorage.getItem(INVESTIGATION_CACHE_KEY), null));
+      setTopCases(cachedCases);
+      setQueueVisible(true);
+      setSelectedCaseId(cachedSelectedCaseId || getCaseId(cachedCases[0]) || '');
+    } else {
+      setComplete(false);
+      setAgentSectionVisible(false);
+      setResultVisible(false);
+      setVerdictVisible(false);
+      setBadgeComplete(false);
+      setApiResult(null);
+      setTopCases([]);
+      setSelectedCaseId('');
+      setQueueVisible(false);
+    }
   }, [selectedMode]);
 
   const setAgentState = useCallback((idx, state) => {
@@ -294,11 +329,8 @@ export default function CommandCenter() {
     setBadgeComplete(false);
     setAgentStates(AGENTS.map(() => 'waiting'));
 
-    localStorage.removeItem(TOP_CASES_KEY);
-    localStorage.removeItem(SELECTED_CASE_ID_KEY);
-    localStorage.removeItem(SELECTED_CASE_DETAIL_KEY);
-    localStorage.removeItem(SELECTED_REPORT_KEY);
-    localStorage.removeItem(SELECTED_ACTION_LOG_KEY);
+    clearCachedInvestigation();
+    clearRunContext();
 
     setAgentSectionVisible(true);
 
@@ -314,7 +346,7 @@ export default function CommandCenter() {
       setApiResult(result);
       saveCachedInvestigation(result, selectedMode);
 
-      const topRiskPayload = await getTopRiskCases(10);
+      const topRiskPayload = await getTopRiskCases(20);
       const cases = normalizeTopCases(topRiskPayload);
 
       setTopCases(cases);
@@ -325,12 +357,16 @@ export default function CommandCenter() {
       if (firstCaseId) {
         await selectCase(firstCaseId);
       }
+
+      markRunComplete(selectedMode);
     } catch (error) {
       console.error(error);
       setApiError('Backend API failed. No previous queue is shown. Please rerun after backend is ready.');
       setTopCases([]);
       setSelectedCaseId('');
       setQueueVisible(false);
+      clearCachedInvestigation();
+      clearRunContext();
     }
 
     AGENTS.forEach((_, i) => {
@@ -401,6 +437,15 @@ export default function CommandCenter() {
 
   return (
     <div>
+      {running && !complete && (
+      <div className={styles.fullPageLoader}>
+        <div className={styles.loaderCard}>
+          <div className={styles.loaderSpinner} />
+          <div className={styles.loaderTitle}>Splunking...</div>
+          <div className={styles.loaderSub}>Running 7-agent investigation</div>
+        </div>
+      </div>
+    )}
       <nav className={styles.nav}>
         <div className={styles.navLogo}>
           <svg viewBox="0 0 32 32" fill="none">
@@ -442,12 +487,17 @@ export default function CommandCenter() {
             className={styles.clearCacheBtn}
             onClick={() => {
               clearCachedInvestigation();
-              clearCaseContext();
+              clearRunContext();
               setApiError('');
               setApiResult(null);
               setTopCases([]);
               setSelectedCaseId('');
               setQueueVisible(false);
+              setComplete(false);
+              setAgentSectionVisible(false);
+              setResultVisible(false);
+              setVerdictVisible(false);
+              setBadgeComplete(false);
             }}
           >
             Clear cache/context
@@ -509,10 +559,15 @@ export default function CommandCenter() {
 
       <div className={styles.solveSection}>
         <div className={styles.ssLeft}>
-          <h2>6 scattered signals. 0 connections. Payment releasing in 40 minutes.</h2>
+          <h2>
+            {complete
+              ? 'Investigation result restored for this mode.'
+              : '5 scattered signals. 0 connections. Payment releasing in 40 minutes.'}
+          </h2>
           <p>
-            RavenLedger sends a supervisor agent to coordinate 7 specialists — fusing every signal
-            into one audit-ready case before money leaves the enterprise.
+            {complete
+              ? 'The completed queue is still available because you returned from the MCP Dashboard or case view. Start from Select Mode if you want a fresh investigation.'
+              : 'RavenLedger sends a supervisor agent to coordinate 7 specialists — fusing every signal into one audit-ready case before money leaves the enterprise.'}
           </p>
         </div>
         <button
@@ -596,6 +651,38 @@ export default function CommandCenter() {
             </div>
           ))}
         </div>
+
+        {complete && visibleTopCases.length > 0 && (
+          <div className={styles.mcpDashboardCta}>
+            <div>
+              <span className={styles.mcpDashboardEyebrow}>
+                MCP Case Analysis Ready
+              </span>
+              <h3>{visibleTopCases.length} cases analyzed by Splunk MCP-ready business tools</h3>
+              <p>
+                Open the MCP dashboard to see the 10 business tools, combined risk
+                analysis, and queue-level intelligence for this investigation mode.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              className={styles.mcpDashboardBtn}
+              onClick={() => navigate('/demo/mcp-dashboard')}
+            >
+              Open MCP Dashboard
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M5 12h14M13 6l6 6-6 6"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
 
         {queueVisible && visibleTopCases.length > 0 && (
           <div
@@ -689,16 +776,7 @@ export default function CommandCenter() {
           </div>
         )}
 
-        <div className={`${styles.verdict} ${verdictVisible ? styles.verdictShow : ''}`}>
-          <span className={styles.vdId}>
-            {selectedCaseId || getCaseId(selectedCase) || 'No case selected'}
-          </span>
-          <span className={styles.vdSev}>{selectedSeverity}</span>
-          <span className={styles.vdItem}><b>Score</b> {selectedScore}/100</span>
-          <span className={styles.vdItem}><b>Invoice</b> {selectedInvoice}</span>
-          <span className={styles.vdWhy}>{selectedReason}</span>
-          <span className={styles.vdAction}>{selectedAction}</span>
-        </div>
+       
 
         {complete && selectedCaseId && (
           <div className={styles.nextRouteWrap}>

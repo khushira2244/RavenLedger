@@ -58,3 +58,19 @@ export function simulateAction(payload) {
     body: JSON.stringify(payload),
   });
 }
+
+
+export function getMcpTools() {
+  return request("/mcp/tools");
+}
+
+export function getMcpTool(toolName) {
+  return request(`/mcp/tools/${toolName}`);
+}
+
+export function simulateMcpTool(toolName, payload = {}) {
+  return request(`/mcp/tools/${toolName}/simulate`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}

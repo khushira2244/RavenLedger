@@ -11,6 +11,7 @@ from routes.agent import router as agent_router
 from routes.cases import router as cases_router
 from routes.reports import router as reports_router
 from routes.actions import router as actions_router
+from routes.mcp import router as mcp_router
 
 
 app = FastAPI(
@@ -28,6 +29,7 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+        "https://ravenledger.netlify.app",
     ],
     allow_credentials=False,
     allow_methods=["*"],
@@ -58,3 +60,4 @@ app.include_router(agent_router)
 app.include_router(cases_router)
 app.include_router(reports_router)
 app.include_router(actions_router)
+app.include_router(mcp_router)

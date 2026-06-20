@@ -1049,3 +1049,164 @@
     transition: none !important;
   }
 }
+
+.mcpGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.mcpCard {
+  border: 1px solid rgba(34, 197, 94, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 18px;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.mcpCard:hover,
+.mcpCardActive {
+  border-color: rgba(34, 197, 94, 0.55);
+  background: rgba(34, 197, 94, 0.1);
+  transform: translateY(-2px);
+}
+
+.mcpStatus {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #86efac;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mcpCard h3 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.mcpCard code {
+  display: block;
+  color: #22c55e;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  margin-bottom: 10px;
+  word-break: break-word;
+}
+
+.mcpCard p {
+  margin: 0 0 12px;
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.55;
+  font-size: 13px;
+}
+
+.mcpCard span {
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 12px;
+}
+
+.mcpDetail {
+  margin-top: 24px;
+  border-radius: 24px;
+  padding: 22px;
+  border: 1px solid rgba(34, 197, 94, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mcpDetail h3 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: 24px;
+}
+
+.mcpDetail p {
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.6;
+}
+
+.mcpMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.mcpMetaRow span {
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: rgba(34, 197, 94, 0.1);
+  color: #bbf7d0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.mcpJsonGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.mcpJsonBox {
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(34, 197, 94, 0.14);
+}
+
+.mcpJsonBox b {
+  display: block;
+  color: #86efac;
+  margin-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mcpJsonBox pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.nextFlow {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  color: #bbf7d0;
+  font-weight: 800;
+}
+
+.nextFlow span {
+  border-radius: 999px;
+  padding: 8px 11px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.18);
+}
+
+.nextFlow b {
+  color: #22c55e;
+}
+
+@media (max-width: 800px) {
+  .mcpJsonGrid {
+    grid-template-columns: 1fr;
+  }
+}

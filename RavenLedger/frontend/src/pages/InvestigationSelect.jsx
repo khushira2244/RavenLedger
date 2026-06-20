@@ -4,6 +4,10 @@ import styles from "./InvestigationSelect.module.css";
 import { getInvestigationModes } from "../api/ravenledgerApi";
 
 const MODE_KEY = "ravenledger_selected_mode";
+const RUN_COMPLETE_KEY = "ravenledger:runComplete";
+const TOP_CASES_KEY = "ravenledger:topCases";
+const LAST_RUN_MODE_KEY = "ravenledger:lastRunMode";
+
 const SELECTED_CASE_ID_KEY = "ravenledger:selectedCaseId";
 const SELECTED_CASE_DETAIL_KEY = "ravenledger:selectedCaseDetail";
 const SELECTED_REPORT_KEY = "ravenledger:selectedReport";
@@ -153,7 +157,9 @@ export default function InvestigationSelect() {
   const navigate = useNavigate();
 
   const [modes, setModes] = useState(FALLBACK_MODES);
-  const [selectedMode, setSelectedMode] = useState("full");
+  const [selectedMode, setSelectedMode] = useState(() => {
+    return localStorage.getItem(MODE_KEY) || "full";
+  });
   const [loadingModes, setLoadingModes] = useState(false);
   const [starting, setStarting] = useState(false);
   const [apiNote, setApiNote] = useState("");
@@ -194,16 +200,33 @@ export default function InvestigationSelect() {
     );
   }, [modes, selectedMode]);
 
+  function clearPreviousInvestigationCache() {
+    localStorage.removeItem(RUN_COMPLETE_KEY);
+    localStorage.removeItem(TOP_CASES_KEY);
+    localStorage.removeItem(LAST_RUN_MODE_KEY);
+
+    localStorage.removeItem(SELECTED_CASE_ID_KEY);
+    localStorage.removeItem(SELECTED_CASE_DETAIL_KEY);
+    localStorage.removeItem(SELECTED_REPORT_KEY);
+    localStorage.removeItem(SELECTED_ACTION_LOG_KEY);
+
+    localStorage.removeItem("ravenledger_latest_result");
+    localStorage.removeItem("ravenledger:selectedReport");
+    localStorage.removeItem("ravenledger:selectedActionLog");
+  }
+
   function startInvestigation() {
     if (!activeMode || starting) return;
 
     setStarting(true);
 
-    localStorage.setItem(MODE_KEY, activeMode.mode);
-    localStorage.removeItem(SELECTED_CASE_ID_KEY);
-    localStorage.removeItem(SELECTED_CASE_DETAIL_KEY);
-    localStorage.removeItem(SELECTED_REPORT_KEY);
-    localStorage.removeItem(SELECTED_ACTION_LOG_KEY);
+    const nextMode = activeMode.mode;
+
+    // Coming from Select page means the user wants a fresh investigation.
+    // Always clear old run/cache, even if the same mode is selected again.
+    clearPreviousInvestigationCache();
+
+    localStorage.setItem(MODE_KEY, nextMode);
 
     navigate("/demo");
   }

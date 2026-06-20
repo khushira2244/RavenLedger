@@ -2,28 +2,29 @@
   "agent_name": "RavenLedger Supervisor Agent",
   "agent_version": "v2_multi_agent",
   "status": "completed",
-  "selected_mode": "insider_behavior",
+  "selected_mode": "payment_fraud",
   "investigation_focus": {
-    "mode": "insider_behavior",
-    "label": "Insider Behavior Investigation",
-    "description": "Focuses on suspicious users, logon/device/http activity, insider score, and user behavior signals attached to the payment-risk case.",
+    "mode": "payment_fraud",
+    "label": "Payment Fraud Investigation",
+    "description": "Focuses on invoice fraud, supplier risk, split invoice behavior, late-night submission, invoice amount, and payment hold recommendation.",
     "primary_agents": [
-      "Insider Behavior Agent",
+      "Business Risk Agent",
       "Correlation Agent",
       "Policy Decision Agent"
     ],
     "focus_fields": [
-      "insider_user",
-      "insider_risk_score",
-      "insider_signals",
-      "insider_severity"
+      "business_reasons",
+      "business_risk_score",
+      "supplier_id",
+      "invoice_amount",
+      "business_recommended_next_step"
     ],
     "recommended_view": "investigation_case",
-    "prompt": "Investigate insider behavior linked to risky ERP payment activity."
+    "prompt": "Investigate payment fraud signals for high-risk ERP invoices."
   },
-  "started_at": "2026-06-15T06:38:52.085217+00:00",
-  "completed_at": "2026-06-15T06:40:25.022944+00:00",
-  "user_prompt": "Investigate insider behavior linked to risky ERP payment activity.",
+  "started_at": "2026-06-20T16:39:02.109261+00:00",
+  "completed_at": "2026-06-20T16:41:49.651339+00:00",
+  "user_prompt": "Investigate payment fraud signals for high-risk ERP invoices.",
   "splunk_mode": "Live Splunk REST/Python adapter",
   "mcp_status": "MCP-ready adapter architecture; REST adapter used for stable demo.",
   "agents": [
@@ -32,14 +33,14 @@
       "status": "completed",
       "records": 10,
       "output": "top_business_risk_cases.json",
-      "primary_for_selected_mode": false
+      "primary_for_selected_mode": true
     },
     {
       "agent": "Insider Behavior Agent",
       "status": "completed",
       "records": 10,
       "output": "top_insider_risk_users.json",
-      "primary_for_selected_mode": true
+      "primary_for_selected_mode": false
     },
     {
       "agent": "Splunk Evidence Agent",
@@ -246,18 +247,19 @@
       }
     ],
     "spl_plain_english": "Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation.",
-    "selected_mode": "insider_behavior",
-    "investigation_focus_label": "Insider Behavior Investigation",
-    "investigation_focus_description": "Focuses on suspicious users, logon/device/http activity, insider score, and user behavior signals attached to the payment-risk case.",
+    "selected_mode": "payment_fraud",
+    "investigation_focus_label": "Payment Fraud Investigation",
+    "investigation_focus_description": "Focuses on invoice fraud, supplier risk, split invoice behavior, late-night submission, invoice amount, and payment hold recommendation.",
     "focus_fields": [
-      "insider_user",
-      "insider_risk_score",
-      "insider_signals",
-      "insider_severity"
+      "business_reasons",
+      "business_risk_score",
+      "supplier_id",
+      "invoice_amount",
+      "business_recommended_next_step"
     ],
     "recommended_view": "investigation_case"
   },
-  "summary": "RavenLedger ran a Insider Behavior Investigation and ranked RL-CORR-0001 as the priority case. Invoice INV_0249564 has combined risk score 89/100 with severity Critical. The supervisor coordinated business risk, insider behavior, live Splunk evidence, correlation, policy controls, and audit reporting. Recommended action: Hold payment immediately, escalate to Finance, SOC, Compliance, and generate audit report.",
+  "summary": "RavenLedger ran a Payment Fraud Investigation and ranked RL-CORR-0001 as the priority case. Invoice INV_0249564 has combined risk score 89/100 with severity Critical. The supervisor coordinated business risk, insider behavior, live Splunk evidence, correlation, policy controls, and audit reporting. Recommended action: Hold payment immediately, escalate to Finance, SOC, Compliance, and generate audit report.",
   "report_paths": [
     "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0001.md",
     "C:\\Users\\Khushboo\\Documents\\splunk\\RavenLedger\\data\\processed\\reports\\RL-CORR-0002.md",

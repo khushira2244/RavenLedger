@@ -19,7 +19,7 @@ const FLOW_STEPS = [
   { num: '04', name: 'Correlation Agent',      hint: 'Fuses all streams into one case',           human: false },
   { num: '05', name: 'Policy Decision Agent',  hint: 'Named controls and escalation targets',     human: false },
   { num: '06', name: 'Audit Report Agent',     hint: 'Audit-ready markdown report',               human: false },
-  { num: '07', name: 'Human Action Agent',     hint: 'Executes only what the analyst approves',   human: true  },
+  { num: '07', name: 'Human Action Agent',     hint: 'Records only what the analyst approves',   human: true  },
 ];
 
 const METRICS = [
@@ -36,7 +36,7 @@ const STREAMS = [
 ];
 
 const QUEUE_ROWS = [
-  { rank: '#1', dotColor: '#E24B4A', id: 'RL-CORR-0010 · INV_0069589', reason: 'The only case combining blacklisted supplier, split invoice behavior, late-night submission, insider-risk context, and 20 live Splunk events.', reasonBold: 'Why this case first?', pill: 'HIGH',   pillCls: 'qPillHi',  top: true  },
+  { rank: '#1', dotColor: '#E24B4A', id: 'RL-CORR-0001 · INV_0249564', reason: 'The only case combining blacklisted supplier, split invoice behavior, late-night submission, insider-risk context, and 20 live Splunk events.', reasonBold: 'Why this case first?', pill: 'HIGH',   pillCls: 'qPillHi',  top: true  },
   { rank: '#2', dotColor: '#EF9F27', id: 'RL-CORR-0007 · INV_0071204', reason: 'Duplicate invoice signal with supplier risk — no insider context attached.',                                                                     reasonBold: '',                    pill: 'MEDIUM', pillCls: 'qPillMed', top: false },
   { rank: '#3', dotColor: '#EF9F27', id: 'RL-CORR-0004 · INV_0070983', reason: 'Threshold-adjacent amount with unusual submission time — single signal only.',                                                                   reasonBold: '',                    pill: 'MEDIUM', pillCls: 'qPillMed', top: false },
 ];
@@ -207,13 +207,13 @@ export default function LandingPage() {
                 <span className={styles.caseTitle}>
                   <span className={styles.rankTag}>#1 IN QUEUE</span>High-Risk Payment Case
                 </span>
-                <span className={styles.badgeHigh}>HIGH</span>
+                <span className={styles.badgeHigh}>CRITICAL</span>
               </div>
               <div className={styles.riskMeter}>
                 <div className={styles.riskBar}><div className={styles.riskFill}/></div>
                 <div className={styles.riskNums}>
                   <span>4 risk signals detected</span>
-                  <span className={styles.scoreSmall}>score 80/100</span>
+                  <span className={styles.scoreSmall}>score 89/100</span>
                 </div>
               </div>
               <div className={styles.chips} aria-label="Contributing risk factors">
@@ -227,7 +227,7 @@ export default function LandingPage() {
                 Only case combining blacklisted supplier, split-invoice pattern, insider-risk context, and 20 live Splunk events.
               </div>
               <div className={styles.caseRows}>
-                <div className={styles.caseRow}><span className={styles.caseRowK}>Case</span><span className={styles.caseRowV}>RL-CORR-0010 · INV_0069589</span></div>
+                <div className={styles.caseRow}><span className={styles.caseRowK}>Case</span><span className={styles.caseRowV}>RL-CORR-0001 · INV_0249564</span></div>
                 <div className={styles.caseRow}><span className={styles.caseRowK}>Splunk Evidence</span><span className={`${styles.caseRowV} ${styles.caseRowVGreen}`}>20 live events</span></div>
                 <div className={styles.caseRow}><span className={styles.caseRowK}>Controls</span><span className={styles.caseRowV}>3 failed · 1 warn · 1 pass · 1 req</span></div>
               </div>
@@ -331,7 +331,7 @@ export default function LandingPage() {
                 <g><rect x="420" y="110" width="150" height="64" rx="10" fill="#0B3D2E" stroke="#19E07C" strokeWidth="1.5"/><text x="495" y="138" fontSize="13.5" fontWeight="600" fill="#19E07C">SPLUNK EVIDENCE</text><text x="495" y="158" fontSize="11.5" fill="#9FD8BC" fontFamily="Inter,sans-serif">Live SPL · BOTS v3</text></g>
                 <g><rect x="590" y="110" width="150" height="64" rx="10" fill="#fff" stroke="#0B3D2E" strokeWidth="1.5"/><text x="665" y="138" fontSize="13.5" fontWeight="600" fill="#0A1A11">CORRELATION</text><text x="665" y="158" fontSize="11.5" fill="#5F6E65" fontFamily="Inter,sans-serif">Case fusion</text></g>
                 <g><rect x="760" y="110" width="150" height="64" rx="10" fill="#fff" stroke="#0B3D2E" strokeWidth="1.5"/><text x="835" y="138" fontSize="13.5" fontWeight="600" fill="#0A1A11">POLICY</text><text x="835" y="158" fontSize="11.5" fill="#5F6E65" fontFamily="Inter,sans-serif">Named controls</text></g>
-                <g><rect x="930" y="110" width="150" height="64" rx="10" fill="#fff" stroke="#0B3D2E" strokeWidth="1.5"/><text x="1005" y="138" fontSize="13.5" fontWeight="600" fill="#0A1A11">AUDIT REPORT</text><text x="1005" y="158" fontSize="11.5" fill="#5F6E65" fontFamily="Inter,sans-serif">RL-CORR-XXXX</text></g>
+                <g><rect x="930" y="110" width="150" height="64" rx="10" fill="#fff" stroke="#0B3D2E" strokeWidth="1.5"/><text x="1005" y="138" fontSize="13.5" fontWeight="600" fill="#0A1A11">AUDIT REPORT</text><text x="1005" y="158" fontSize="11.5" fill="#5F6E65" fontFamily="Inter,sans-serif">RL-CORR-0001</text></g>
               </g>
               <g stroke="#0FA85B" strokeWidth="1.4" strokeDasharray="4 5" fill="none">
                 <path d="M 232 142 L 247 142" markerEnd="url(#arrG)"/>
@@ -402,12 +402,12 @@ export default function LandingPage() {
           </div>
           <div className={`${styles.convCase} ${styles.reveal}`} data-reveal="">
             <div className={styles.convTop}>
-              <span className={styles.convId}>RL-CORR-0010</span>
-              <span className={styles.badgeHigh}>SEVERITY · HIGH</span>
+              <span className={styles.convId}>RL-CORR-0001</span>
+              <span className={styles.badgeHigh}>SEVERITY · CRITICAL</span>
             </div>
             <div className={styles.convGrid}>
-              <span className={styles.convK}>Invoice</span><span className={styles.convV}>INV_0069589</span>
-              <span className={styles.convK}>Combined score</span><span className={styles.convV}>80 / 100</span>
+              <span className={styles.convK}>Invoice</span><span className={styles.convV}>INV_0249564</span>
+              <span className={styles.convK}>Combined score</span><span className={styles.convV}>89 / 100</span>
               <span className={styles.convK}>Controls failed</span><span className={styles.convV}>3 of 6</span>
               <span className={styles.convK}>Action</span><span className={styles.convV} style={{ color: 'var(--risk)' }}>Hold for human review</span>
             </div>
@@ -483,7 +483,7 @@ export default function LandingPage() {
           <div>
             <span className={`${styles.eyebrow} ${styles.eyebrowDark} ${styles.reveal}`} data-reveal="">Control stays with your analysts</span>
             <h2 className={`${styles.hilH2} ${styles.reveal}`} data-reveal="">Human-approved response, not blind automation.</h2>
-            <p className={`${styles.hilP} ${styles.reveal}`} data-reveal="">RavenLedger does not automatically block payments or punish users. The Human Action Agent prepares the response — and executes only what the analyst approves. Every decision is recorded with case, action, actor, timestamp, and reason.</p>
+            <p className={`${styles.hilP} ${styles.reveal}`} data-reveal="">RavenLedger does not automatically block payments or punish users. The Human Action Agent prepares the response — and records only what the analyst approves. Every decision is logged with case, action, actor, timestamp, and reason.</p>
           </div>
           <div className={`${styles.checklist} ${styles.reveal}`} data-reveal="">
             {CHECK_ITEMS.map((item) => (
@@ -520,7 +520,7 @@ export default function LandingPage() {
               <b>PLAIN ENGLISH</b>
               Searching BOTS v3 for live telemetry evidence that can be attached to the high-risk ERP payment investigation.
             </div>
-            <div className={styles.termResult}><span className={styles.pulse} aria-hidden="true"/>20 events returned · attached to case RL-CORR-0010</div>
+            <div className={styles.termResult}><span className={styles.pulse} aria-hidden="true"/>20 events returned · attached to case RL-CORR-0001</div>
           </div>
         </div>
       </section>
@@ -531,7 +531,7 @@ export default function LandingPage() {
           <h2 className={`${styles.finalH2} ${styles.reveal}`} data-reveal="">From risky payment to audit-ready action.</h2>
           <p className={`${styles.finalP} ${styles.reveal}`} data-reveal="">A supervisor agent coordinates seven specialists to detect payment risk, investigate with live Splunk evidence, check named controls, and act through human-approved workflows — before money leaves the enterprise.</p>
           <Link
-            to="/demo"
+            to="/demo/select"
             className={`${styles.btn} ${styles.btnSolid} ${styles.btnFinal} ${styles.reveal}`}
             data-reveal=""
           >

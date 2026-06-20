@@ -4,6 +4,7 @@ import InvestigationJourney from "./pages/InvestigationJourney";
 import LandingPage from "./pages/LandingPage";
 import CapabilityCenter from "./pages/CapabilityCenter";
 import InvestigationSelect from "./pages/InvestigationSelect";
+import McpDashboard from "./pages/McpDashboard";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/demo/select" element={<InvestigationSelect />} />
         <Route path="/demo" element={<CommandCenter />} />
+        <Route path="/demo/mcp-dashboard" element={<McpDashboard />} />
         <Route path="/demo/case" element={<InvestigationJourney />} />
         <Route path="/demo/capability" element={<CapabilityCenter />} />
       </Routes>

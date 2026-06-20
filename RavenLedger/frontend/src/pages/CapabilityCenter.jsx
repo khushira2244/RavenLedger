@@ -1,13 +1,92 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './CapabilityCenter.module.css';
-import { getCase, getReport, simulateAction } from '../api/ravenledgerApi';
+import {
+  getCase,
+  getReport,
+  simulateAction,
+  getMcpTools,
+  simulateMcpTool,
+} from '../api/ravenledgerApi';
 
+const MODE_KEY = 'ravenledger_selected_mode';
 const SELECTED_CASE_ID_KEY = 'ravenledger:selectedCaseId';
 const SELECTED_CASE_DETAIL_KEY = 'ravenledger:selectedCaseDetail';
 const SELECTED_ACTION_LOG_KEY = 'ravenledger:selectedActionLog';
 const SELECTED_REPORT_KEY = 'ravenledger:selectedReport';
 
+const MODE_LABELS = {
+  full: 'Full Multi-Agent Investigation',
+  payment_fraud: 'Payment Fraud Investigation',
+  insider_behavior: 'Insider Behavior Investigation',
+  splunk_evidence: 'Splunk Evidence Investigation',
+  policy_audit: 'Policy & Audit Investigation',
+};
+
+const MODE_TOOL_MAP = {
+  full: [
+    'assess_payment_release_risk',
+    'rank_high_risk_payments',
+    'explain_payment_ranking_reason',
+    'check_supplier_blacklist_status',
+    'check_supplier_security_context',
+    'detect_insider_payment_abuse',
+    'retrieve_splunk_evidence_for_case',
+    'validate_payment_controls',
+    'recommend_business_action',
+    'log_human_decision_to_splunk',
+  ],
+  payment_fraud: [
+    'assess_payment_release_risk',
+    'rank_high_risk_payments',
+    'explain_payment_ranking_reason',
+    'check_supplier_blacklist_status',
+    'check_supplier_security_context',
+    'validate_payment_controls',
+    'recommend_business_action',
+    'retrieve_splunk_evidence_for_case',
+    'log_human_decision_to_splunk',
+    'detect_insider_payment_abuse',
+  ],
+  insider_behavior: [
+    'detect_insider_payment_abuse',
+    'retrieve_splunk_evidence_for_case',
+    'check_supplier_security_context',
+    'validate_payment_controls',
+    'recommend_business_action',
+    'log_human_decision_to_splunk',
+    'assess_payment_release_risk',
+    'rank_high_risk_payments',
+    'explain_payment_ranking_reason',
+    'check_supplier_blacklist_status',
+  ],
+  splunk_evidence: [
+    'retrieve_splunk_evidence_for_case',
+    'check_supplier_security_context',
+    'explain_payment_ranking_reason',
+    'validate_payment_controls',
+    'recommend_business_action',
+    'log_human_decision_to_splunk',
+    'assess_payment_release_risk',
+    'rank_high_risk_payments',
+    'check_supplier_blacklist_status',
+    'detect_insider_payment_abuse',
+  ],
+  policy_audit: [
+    'validate_payment_controls',
+    'recommend_business_action',
+    'log_human_decision_to_splunk',
+    'assess_payment_release_risk',
+    'explain_payment_ranking_reason',
+    'retrieve_splunk_evidence_for_case',
+    'check_supplier_security_context',
+    'rank_high_risk_payments',
+    'check_supplier_blacklist_status',
+    'detect_insider_payment_abuse',
+  ],
+};
+
 const MENU_ITEMS = [
+  { id: 7, icon: '🧩', title: 'Splunk MCP Extension', sub: '10 business tools' },
   { id: 1, icon: '🔍', title: 'Splunk Evidence Search', sub: 'BOTS v3 · SPL · REST' },
   { id: 2, icon: '🤖', title: 'AI Agent Workflow', sub: '7 specialists · supervisor' },
   { id: 3, icon: '🛡', title: 'Controls & Guardrails', sub: '6 named controls' },
@@ -49,7 +128,7 @@ const ARCH_TECH_PILLS = [
   'React frontend',
   'Agent wrappers',
   'Audit / action log',
-  'MCP-ready adapter',
+  'MCP-ready business tools',
   'REST / Python live',
 ];
 
@@ -139,6 +218,27 @@ function normalizeEvidenceTable(caseDetail) {
   }));
 }
 
+function getOrderedMcpTools(tools, selectedMode) {
+  const order = MODE_TOOL_MAP[selectedMode] || MODE_TOOL_MAP.full;
+  const map = new Map(tools.map((tool) => [tool.name, tool]));
+
+  const ordered = order
+    .map((toolName) => map.get(toolName))
+    .filter(Boolean);
+
+  const remaining = tools.filter((tool) => !order.includes(tool.name));
+
+  return [...ordered, ...remaining];
+}
+
+function isModePrimaryTool(toolName, selectedMode) {
+  const order = MODE_TOOL_MAP[selectedMode] || MODE_TOOL_MAP.full;
+
+  if (selectedMode === 'full') return true;
+
+  return order.slice(0, 6).includes(toolName);
+}
+
 function PanelHead({ eye, title, desc }) {
   return (
     <div className={styles.panelHead}>
@@ -184,7 +284,7 @@ function Tab1({ generatedSpl, splunkEvidenceCount, evidenceTable }) {
   return (
     <div>
       <PanelHead
-        eye="Capability 01"
+        eye="Capability 02"
         title="Splunk Evidence Search"
         desc="RavenLedger uses Splunk telemetry as the evidence layer for ERP payment risk investigation — pulling events from BOTS v3 and attaching them to each case."
       />
@@ -229,9 +329,8 @@ function Tab1({ generatedSpl, splunkEvidenceCount, evidenceTable }) {
           <div key={metric.label} className={styles.proofMetric}>
             <div className={styles.pmLabel}>{metric.label}</div>
             <div
-              className={`${styles.pmVal} ${
-                metric.valCls ? styles[metric.valCls] : ''
-              }`}
+              className={`${styles.pmVal} ${metric.valCls ? styles[metric.valCls] : ''
+                }`}
               style={metric.valStyle}
             >
               {metric.val}
@@ -294,7 +393,7 @@ function Tab2({ caseId, riskScore, severity, recommendedAction, splunkEvidenceCo
   return (
     <div>
       <PanelHead
-        eye="Capability 02"
+        eye="Capability 03"
         title="AI Agent Workflow"
         desc="Seven specialist agents — coordinated by a supervisor — convert scattered evidence into one structured investigation case."
       />
@@ -304,9 +403,8 @@ function Tab2({ caseId, riskScore, severity, recommendedAction, splunkEvidenceCo
           <div key={metric.label} className={styles.proofMetric}>
             <div className={styles.pmLabel}>{metric.label}</div>
             <div
-              className={`${styles.pmVal} ${
-                metric.valCls ? styles[metric.valCls] : ''
-              }`}
+              className={`${styles.pmVal} ${metric.valCls ? styles[metric.valCls] : ''
+                }`}
               style={metric.valStyle}
             >
               {metric.val}
@@ -325,9 +423,8 @@ function Tab2({ caseId, riskScore, severity, recommendedAction, splunkEvidenceCo
               <div className={styles.arDesc}>{agent.desc}</div>
             </div>
             <span
-              className={`${styles.arDone} ${
-                agent.ready ? styles.arDoneReady : ''
-              }`}
+              className={`${styles.arDone} ${agent.ready ? styles.arDoneReady : ''
+                }`}
             >
               {agent.status}
             </span>
@@ -342,7 +439,7 @@ function Tab3({ controls, riskScore }) {
   return (
     <div>
       <PanelHead
-        eye="Capability 03"
+        eye="Capability 04"
         title="Controls & Guardrails"
         desc="RavenLedger validates every case against named finance, procurement, insider, Splunk evidence, and approval controls — no auto-execution on critical cases."
       />
@@ -388,7 +485,7 @@ function Tab4({
   return (
     <div>
       <PanelHead
-        eye="Capability 04"
+        eye="Capability 05"
         title="Audit Report"
         desc="RavenLedger converts investigation evidence into an audit-ready explanation — readable by Finance, SOC, and Audit teams."
       />
@@ -448,7 +545,7 @@ function Tab5({ caseId, recommendedAction, actionReason, savedActionLog, onRecor
   return (
     <div>
       <PanelHead
-        eye="Capability 05"
+        eye="Capability 06"
         title="Human Action"
         desc="RavenLedger keeps the analyst in the loop for all high-risk financial decisions. The Human Action Agent prepares the response — the analyst approves it."
       />
@@ -457,9 +554,8 @@ function Tab5({ caseId, recommendedAction, actionReason, savedActionLog, onRecor
         {actionButtons.map((button) => (
           <button
             key={button.label}
-            className={`${styles.actionBtn} ${
-              button.cls ? styles[button.cls] : ''
-            }`}
+            className={`${styles.actionBtn} ${button.cls ? styles[button.cls] : ''
+              }`}
             onClick={() => onRecordAction(button.label)}
             type="button"
           >
@@ -511,7 +607,7 @@ function Tab6() {
   return (
     <div>
       <PanelHead
-        eye="Capability 06"
+        eye="Capability 07"
         title="Architecture Flow"
         desc="How RavenLedger connects Splunk telemetry, AI agents, policy controls, and human approval into one investigation workflow."
       />
@@ -522,9 +618,8 @@ function Tab6() {
             {['🧾 ERP Invoice Risk', '🔐 CERT Insider Context', '🔍 Splunk BOTS v3', '📜 Policy Rules'].map((name, index) => (
               <Fragment key={name}>
                 <div
-                  className={`${styles.archNode} ${
-                    name.includes('Splunk') ? styles.archNodePine : ''
-                  }`}
+                  className={`${styles.archNode} ${name.includes('Splunk') ? styles.archNodePine : ''
+                    }`}
                 >
                   {name}
                 </div>
@@ -594,18 +689,234 @@ function Tab6() {
   );
 }
 
+function Tab7({
+  mcpData,
+  selectedMcpTool,
+  onSelectMcpTool,
+  simulatedMcpResult,
+  onSimulateMcpTool,
+  mcpError,
+  selectedMode,
+}) {
+  const mcpDetailRef = useRef(null);
+  const hasMountedRef = useRef(false);
+
+  const tools = useMemo(() => {
+    return getOrderedMcpTools(mcpData?.tools || [], selectedMode);
+  }, [mcpData, selectedMode]);
+
+  const activeTool =
+    selectedMcpTool && tools.some((tool) => tool.name === selectedMcpTool.name)
+      ? selectedMcpTool
+      : tools[0] || null;
+
+  const selectedModeLabel = MODE_LABELS[selectedMode] || MODE_LABELS.full;
+
+  useEffect(() => {
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+
+    if (!selectedMcpTool || !mcpDetailRef.current) return;
+
+    mcpDetailRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }, [selectedMcpTool]);
+
+  return (
+    <div>
+      <PanelHead
+        eye="Capability 01"
+        title="Splunk MCP-ready Business Control Surface"
+        desc="Agent-callable business tools that convert Splunk telemetry into payment release decisions, supplier checks, insider-risk correlation, control validation, action recommendation, and human-approved audit logging."
+      />
+
+      <div className={styles.proofStatement}>
+        Showing MCP tools for selected mode: <b>{selectedModeLabel}</b>. Tool
+        definitions are loaded from the backend API, not hardcoded in the frontend.
+      </div>
+
+      {mcpError && (
+        <div className={styles.proofStatement} style={{ marginTop: 16 }}>
+          {mcpError}
+        </div>
+      )}
+
+      {!mcpError && tools.length === 0 && (
+        <div className={styles.proofStatement} style={{ marginTop: 16 }}>
+          No MCP tools returned from backend.
+        </div>
+      )}
+
+      <div className={styles.proofMetrics}>
+        <div className={styles.proofMetric}>
+          <div className={styles.pmLabel}>Selected Mode</div>
+          <div className={styles.pmVal} style={{ fontSize: 14 }}>
+            {selectedModeLabel}
+          </div>
+          <div className={styles.pmSub}>Context-aware tool order</div>
+        </div>
+
+        <div className={styles.proofMetric}>
+          <div className={styles.pmLabel}>Current Adapter</div>
+          <div className={styles.pmVal} style={{ fontSize: 14 }}>
+            {mcpData?.current_adapter || 'Not reported by API'}
+          </div>
+          <div className={styles.pmSub}>Working evidence mode</div>
+        </div>
+
+        <div className={styles.proofMetric}>
+          <div className={styles.pmLabel}>Target Adapter</div>
+          <div className={styles.pmVal} style={{ fontSize: 14 }}>
+            {mcpData?.target_adapter || 'Not reported by API'}
+          </div>
+          <div className={styles.pmSub}>Official mapping direction</div>
+        </div>
+
+        <div className={styles.proofMetric}>
+          <div className={styles.pmLabel}>Tool Count</div>
+          <div className={`${styles.pmVal} ${styles.pmValGreen}`}>
+            {mcpData?.tool_count ?? tools.length}
+          </div>
+          <div className={styles.pmSub}>Backend MCP tools</div>
+        </div>
+      </div>
+
+      {tools.length > 0 && (
+        <div className={styles.mcpGrid}>
+          {tools.map((tool) => {
+            const modePrimary = isModePrimaryTool(tool.name, selectedMode);
+
+            return (
+              <button
+                key={tool.name}
+                type="button"
+                className={`${styles.mcpCard} ${activeTool?.name === tool.name ? styles.mcpCardActive : ''
+                  }`}
+                onClick={() => onSelectMcpTool(tool)}
+              >
+                <div className={styles.mcpStatus}>
+                  {modePrimary ? 'MODE PRIORITY' : tool.status || 'API Tool'}
+                </div>
+                <h3>{tool.title || tool.name}</h3>
+                <p>{tool.business_effect}</p>
+                <span>{tool.used_by_agent}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {activeTool && (
+        <div ref={mcpDetailRef} className={styles.mcpDetail}>
+          <div>
+            <div className={styles.panelEye}>Selected MCP business tool</div>
+            <h3>{activeTool.title || activeTool.name}</h3>
+            <p>{activeTool.business_effect}</p>
+
+            <div className={styles.mcpMetaRow}>
+              <span>Used by: {activeTool.used_by_agent || 'Not reported by API'}</span>
+              <span>{activeTool.status || 'API Tool'}</span>
+            </div>
+
+            <button
+              type="button"
+              className={styles.actionBtn}
+              onClick={() => onSimulateMcpTool(activeTool)}
+            >
+              Simulate Tool Output
+            </button>
+          </div>
+
+          <div className={styles.mcpJsonGrid}>
+            <div className={styles.mcpJsonBox}>
+              <b>Input JSON</b>
+              <pre>{JSON.stringify(activeTool.input || {}, null, 2)}</pre>
+            </div>
+
+            <div className={styles.mcpJsonBox}>
+              <b>Output JSON</b>
+              <pre>
+                {JSON.stringify(
+                  simulatedMcpResult?.tool === activeTool.name
+                    ? simulatedMcpResult.result
+                    : activeTool.output || {},
+                  null,
+                  2
+                )}
+              </pre>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {tools.length > 0 && (
+        <>
+          <div className={styles.nextFlow}>
+            <span>Splunk telemetry</span>
+            <b>→</b>
+            <span>MCP-ready tool</span>
+            <b>→</b>
+            <span>RavenLedger agent</span>
+            <b>→</b>
+            <span>Payment/security decision</span>
+            <b>→</b>
+            <span>Human-approved audit log</span>
+          </div>
+
+          <div className={styles.proofStatement} style={{ marginTop: 18 }}>
+            RavenLedger does not add MCP for tool count. It defines Splunk
+            MCP-ready business tools that help agents decide whether to hold,
+            escalate, review, release, or audit a risky ERP payment before money
+            leaves.
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function CapabilityCenter({ onBack }) {
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(7);
+  const panelTopRef = useRef(null);
+
+  const [selectedMode] = useState(() => {
+    return localStorage.getItem(MODE_KEY) || 'full';
+  });
+
   const [caseDetail, setCaseDetail] = useState(() => {
     return safeJsonParse(localStorage.getItem(SELECTED_CASE_DETAIL_KEY));
   });
+
   const [reportText, setReportText] = useState(() => {
     const cachedReport = safeJsonParse(localStorage.getItem(SELECTED_REPORT_KEY));
     return cachedReport?.report || cachedReport?.content || cachedReport?.summary || '';
   });
+
   const [savedActionLog, setSavedActionLog] = useState(() => {
     return safeJsonParse(localStorage.getItem(SELECTED_ACTION_LOG_KEY));
   });
+
+  const [mcpData, setMcpData] = useState(null);
+  const [selectedMcpTool, setSelectedMcpTool] = useState(null);
+  const [simulatedMcpResult, setSimulatedMcpResult] = useState(null);
+  const [mcpError, setMcpError] = useState('');
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, []);
+
+  useEffect(() => {
+    if (!panelTopRef.current) return;
+
+    panelTopRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }, [activeTab]);
 
   useEffect(() => {
     const selectedCaseId =
@@ -637,6 +948,28 @@ export default function CapabilityCenter({ onBack }) {
 
     loadCapabilityData();
   }, [caseDetail, reportText]);
+
+  useEffect(() => {
+    async function loadMcpTools() {
+      try {
+        const data = await getMcpTools();
+        const tools = getOrderedMcpTools(data?.tools || [], selectedMode);
+
+        setMcpData(data);
+        setSelectedMcpTool(tools[0] || null);
+        setMcpError('');
+      } catch (error) {
+        console.error(error);
+        setMcpError(
+          'MCP tools API is not available. Please start the backend and try again.'
+        );
+        setMcpData(null);
+        setSelectedMcpTool(null);
+      }
+    }
+
+    loadMcpTools();
+  }, [selectedMode]);
 
   const caseId =
     caseDetail?.correlation_case_id ||
@@ -719,12 +1052,42 @@ export default function CapabilityCenter({ onBack }) {
     }
   }
 
+  async function handleSimulateMcpTool(tool) {
+    if (!tool?.name) return;
+
+    try {
+      const response = await simulateMcpTool(tool.name, tool.input || {});
+      setSimulatedMcpResult({
+        tool: tool.name,
+        result: response,
+      });
+    } catch (error) {
+      console.error(error);
+      setSimulatedMcpResult({
+        tool: tool.name,
+        result: {
+          error: 'Simulation failed. Check backend endpoint.',
+        },
+      });
+    }
+  }
+
+  function handleSelectMcpTool(tool) {
+    setSelectedMcpTool(tool);
+    setSimulatedMcpResult(null);
+  }
+
+  function handleTabChange(tabId) {
+    setActiveTab(tabId);
+    setSimulatedMcpResult(null);
+  }
+
   const stripItems = [
     { k: 'Track', v: 'Security', vCls: 'tvGreen' },
+    { k: 'Mode', v: MODE_LABELS[selectedMode] || MODE_LABELS.full, vCls: 'tvGreen' },
     { k: 'Case', v: caseId, vCls: '' },
     { k: 'Splunk Data', v: 'BOTS v3 telemetry', vCls: '' },
-    { k: 'AI Workflow', v: '7 specialist agents', vCls: 'tvGreen' },
-    { k: 'Outcome', v: `${recommendedAction} · Escalate to SOC`, vCls: 'tvAmber' },
+    { k: 'MCP Surface', v: '10 business tools', vCls: 'tvAmber' },
   ];
 
   const tabProps = {
@@ -759,6 +1122,15 @@ export default function CapabilityCenter({ onBack }) {
       onRecordAction: handleRecordAction,
     },
     6: {},
+    7: {
+      mcpData,
+      selectedMcpTool,
+      onSelectMcpTool: handleSelectMcpTool,
+      simulatedMcpResult,
+      onSimulateMcpTool: handleSimulateMcpTool,
+      mcpError,
+      selectedMode,
+    },
   };
 
   const ActiveTab =
@@ -769,7 +1141,8 @@ export default function CapabilityCenter({ onBack }) {
       4: Tab4,
       5: Tab5,
       6: Tab6,
-    }[activeTab] || Tab1;
+      7: Tab7,
+    }[activeTab] || Tab7;
 
   return (
     <div>
@@ -805,7 +1178,7 @@ export default function CapabilityCenter({ onBack }) {
           BACK
         </button>
 
-        <span className={styles.navTag}>CAPABILITY PROOF CENTER</span>
+        <span className={styles.navTag}>MCP BUSINESS CONTROL SURFACE</span>
 
         <div className={styles.liveB}>
           <span className={styles.liveDot} />
@@ -834,25 +1207,26 @@ export default function CapabilityCenter({ onBack }) {
           Splunk Agentic Ops Hackathon — Security Track
         </div>
         <h1>
-          Capability <span>Proof Center</span>
+          Splunk MCP-ready <span>Business Control Surface</span>
         </h1>
         <p>
-          How RavenLedger uses Splunk data and AI agents to investigate,
-          validate, and respond to high-risk ERP payments.
+          RavenLedger exposes business-specific MCP-ready tools that turn Splunk
+          telemetry into payment-release decisions, supplier checks, insider-risk
+          correlation, control validation, action recommendation, and
+          human-approved audit logging.
         </p>
       </div>
 
-      <div className={styles.capabilityPage}>
+      <div ref={panelTopRef} className={styles.capabilityPage}>
         <aside className={styles.capabilityMenu}>
-          <div className={styles.cmLabel}>Capabilities</div>
+          <div className={styles.cmLabel}>MCP + Capabilities</div>
 
           {MENU_ITEMS.map((item) => (
             <button
               key={item.id}
-              className={`${styles.capabilityMenuItem} ${
-                activeTab === item.id ? styles.capabilityMenuItemActive : ''
-              }`}
-              onClick={() => setActiveTab(item.id)}
+              className={`${styles.capabilityMenuItem} ${activeTab === item.id ? styles.capabilityMenuItemActive : ''
+                }`}
+              onClick={() => handleTabChange(item.id)}
               type="button"
             >
               <div className={styles.cmiIcon}>{item.icon}</div>
