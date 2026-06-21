@@ -715,49 +715,43 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background:
-    radial-gradient(circle at 50% 40%, rgba(34, 197, 94, 0.28), transparent 38%),
-    linear-gradient(135deg, #022c22 0%, #064e3b 45%, #052e2b 100%);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 }
 
-.loaderCard {
-  min-width: 260px;
-  padding: 34px 38px;
-  border-radius: 28px;
-  background: rgba(6, 78, 59, 0.72);
-  border: 1px solid rgba(34, 197, 94, 0.35);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.35);
+.loaderInline {
   text-align: center;
-  color: white;
-  backdrop-filter: blur(18px);
+  color: #ffffff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
 }
 
 .loaderSpinner {
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
   margin: 0 auto 18px;
   border-radius: 999px;
-  border: 4px solid rgba(255, 255, 255, 0.25);
+  border: 4px solid rgba(255, 255, 255, 0.32);
   border-top-color: #22c55e;
   animation: splunkSpin 0.85s linear infinite;
 }
 
 .loaderTitle {
-  font-size: 26px;
-  font-weight: 900;
+  font-size: 30px;
+  font-weight: 950;
   letter-spacing: -0.03em;
+  color: #ffffff;
 }
 
 .loaderSub {
   margin-top: 8px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 850;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.68);
+  color: #bbf7d0;
 }
 
 @keyframes splunkSpin {
@@ -765,3 +759,5 @@
     transform: rotate(360deg);
   }
 }
+
+

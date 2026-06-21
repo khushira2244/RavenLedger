@@ -22,8 +22,8 @@
     "recommended_view": "investigation_case",
     "prompt": "Investigate payment fraud signals for high-risk ERP invoices."
   },
-  "started_at": "2026-06-20T16:39:02.109261+00:00",
-  "completed_at": "2026-06-20T16:41:49.651339+00:00",
+  "started_at": "2026-06-21T05:19:06.174876+00:00",
+  "completed_at": "2026-06-21T05:20:10.544918+00:00",
   "user_prompt": "Investigate payment fraud signals for high-risk ERP invoices.",
   "splunk_mode": "Live Splunk REST/Python adapter",
   "mcp_status": "MCP-ready adapter architecture; REST adapter used for stable demo.",

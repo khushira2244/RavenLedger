@@ -278,6 +278,17 @@ export default function InvestigationSelect() {
           </div>
         </section>
 
+        <div className={styles.startWrap}>
+          <button
+            type="button"
+            className={styles.startBtn}
+            onClick={startInvestigation}
+            disabled={starting}
+          >
+            {starting ? "Starting Investigation…" : "Start Investigation"}
+          </button>
+        </div>
+
         <section className={styles.cardGrid}>
           {modes.map((mode) => {
             const isSelected = mode.mode === selectedMode;
@@ -286,9 +297,8 @@ export default function InvestigationSelect() {
               <button
                 key={mode.mode}
                 type="button"
-                className={`${styles.modeCard} ${
-                  isSelected ? styles.modeCardSelected : ""
-                }`}
+                className={`${styles.modeCard} ${isSelected ? styles.modeCardSelected : ""
+                  }`}
                 onClick={() => setSelectedMode(mode.mode)}
               >
                 <div className={styles.cardTop}>
@@ -403,16 +413,6 @@ export default function InvestigationSelect() {
           <span>Command Center Opens</span>
         </section>
 
-        <div className={styles.startWrap}>
-          <button
-            type="button"
-            className={styles.startBtn}
-            onClick={startInvestigation}
-            disabled={starting}
-          >
-            {starting ? "Starting Investigation…" : "Start Investigation"}
-          </button>
-        </div>
       </main>
     </div>
   );

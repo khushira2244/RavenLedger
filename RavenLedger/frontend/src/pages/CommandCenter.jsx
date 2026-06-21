@@ -435,17 +435,20 @@ export default function CommandCenter() {
     selectedCase?.recommended_action ||
     'Pending investigation';
 
+
   return (
     <div>
+
       {running && !complete && (
-      <div className={styles.fullPageLoader}>
-        <div className={styles.loaderCard}>
-          <div className={styles.loaderSpinner} />
-          <div className={styles.loaderTitle}>Splunking...</div>
-          <div className={styles.loaderSub}>Running 7-agent investigation</div>
+        <div className={styles.fullPageLoader}>
+          <div className={styles.loaderInline}>
+            <div className={styles.loaderSpinner} />
+            <div className={styles.loaderTitle}>Splunking...</div>
+            <div className={styles.loaderSub}>Running 7-agent investigation</div>
+          </div>
         </div>
-      </div>
-    )}
+      )}
+
       <nav className={styles.nav}>
         <div className={styles.navLogo}>
           <svg viewBox="0 0 32 32" fill="none">
@@ -776,7 +779,7 @@ export default function CommandCenter() {
           </div>
         )}
 
-       
+
 
         {complete && selectedCaseId && (
           <div className={styles.nextRouteWrap}>

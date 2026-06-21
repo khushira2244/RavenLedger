@@ -459,3 +459,27 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+.capabilityActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.imageProofCard {
+  margin-top: 34px;
+  padding: 16px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(6, 78, 59, 0.12);
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.imageProofCard img {
+  width: 100%;
+  display: block;
+  border-radius: 20px;
+  object-fit: cover;
+}
